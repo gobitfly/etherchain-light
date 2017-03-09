@@ -5,10 +5,10 @@ block content
   form(action="/contract/verify", method="post")
     .form-group
       label(for="contractAddress") Contract address
-      input.form-control#contractAddress(type="text", placeholder="0x...", name="contractAddress", value="0xe81e0fC8201008A157bdb8d0C8089ECb1B410B4e")
+      input.form-control#contractAddress(type="text", placeholder="0x...", name="contractAddress")
     .form-group
       label(for="contractName") Contract name
-      input.form-control#contractName(type="text", placeholder="", name="contractName", value="DSToken")
+      input.form-control#contractName(type="text", placeholder="", name="contractName")
     .form-group
       label(for="contractSource") Contract Source
       textarea.form-control#contractSource(rows=15, name="contractSource")
