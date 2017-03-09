@@ -83,7 +83,7 @@ router.get('/raw/:tx', function(req, res, next) {
         callback(err, result);
       });
     }, function(result, callback) {
-      web3.trace.transaction(result.hash, function(err, traces) {
+      web3.trace.replayTransaction(result.hash, ["trace", "stateDiff", "vmTrace"], function(err, traces) {
         callback(err, result, traces);
       });
     }

@@ -1,6 +1,19 @@
 extends layout
 
 block content
-  h3 Raw Transaction trace for #{tx.hash}
-  h4 Trace
-  pre #{JSON.stringify(tx.traces, null, 4)}
+  h3 Raw transaction traces for #{tx.hash}
+  div
+    ul.nav.nav-tabs(role='tablist')
+      li.active(role='presentation')
+        a(href='#trace', aria-controls='trace', role='tab', data-toggle='tab') Trace
+      li(role='presentation')
+        a(href='#vmTrace', aria-controls='vmTrace', role='tab', data-toggle='tab') VM Trace
+      li(role='presentation')
+        a(href='#stateDiff', aria-controls='stateDiff', role='tab', data-toggle='tab') State Diff  
+    .tab-content
+      #trace.tab-pane.active(role='tabpanel')
+        pre #{JSON.stringify(tx.traces.trace, null, 4)}
+      #vmTrace.tab-pane(role='tabpanel')
+        pre #{JSON.stringify(tx.traces.vmTrace, null, 4)}
+      #stateDiff.tab-pane(role='tabpanel')
+        pre #{JSON.stringify(tx.traces.stateDiff, null, 4)}
