@@ -9,6 +9,7 @@ block content
         th Miner
         th Timestamp
         th # Tx
+        th # Uncles
     tbody
       for block in blocks
         tr
@@ -18,6 +19,7 @@ block content
             a(href="/account/" + block.author) #{nameformatter.format(block.author)}
           td #{moment.unix(block.timestamp).format()}
           td #{block.transactions.length}
+          td #{block.uncles.length}
   h3 Recent Transactions
   if txs.length === 0
     p No transactions during the last 10 blocks
@@ -41,4 +43,4 @@ block content
                 a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
               else
                 | New Contract
-            td #{tx.value}
+            td #{ethformatter(tx.value)}

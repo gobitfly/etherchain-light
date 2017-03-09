@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  
+  .row
+    .col-md-12.text-center
+      h3 Uncle #{uncle.number}
+
+  table.table
+    tr
+      td Hash:
+      td #{uncle.hash}
+    tr
+      td Block hash: 
+      td 
+        a(href="/block/" + blockHash) #{blockHash}
+    tr
+      td Miner: 
+      td  
+        a(href="/account/" + uncle.author) #{nameformatter.format(uncle.author)}
+    tr
+      td Gas Limit:
+      td #{numeral(uncle.gasLimit).format()}
+    tr
+      td Gas Used:
+      td #{numeral(uncle.gasUsed).format()}
+    tr
+      td Difficulty:
+      td #{numeral(uncle.difficulty).format()}
+    tr
+      td Total Difficulty:
+      td #{numeral(uncle.totalDifficulty).format()}
+    tr
+      td Timestamp:
+      td #{moment.unix(uncle.timestamp).format()} (#{moment.unix(uncle.timestamp).fromNow()})

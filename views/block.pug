@@ -43,6 +43,12 @@ block content
     tr
       td Transactions:
       td #{block.transactions.length}
+    tr
+      td Uncles
+      td
+        each uncle, index in block.uncles
+          p
+            a(href="uncle/" + block.hash + "/" + index) #{index + " - " + uncle}
   
   h4 Transactions
   if block.transactions.length === 0
