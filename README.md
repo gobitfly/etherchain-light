@@ -1,5 +1,5 @@
 # Etherchain Light
-### Portable blockchain explorer for your private Ethereum chain
+### Lightweight blockchain explorer for your private Ethereum chain
 
 Etherchain Light is an Ethereum blockchain explorer built with NodeJS and Express. It does not require an external database and retrieves all information on the fly from a backend Parity Ethereum node.
 
@@ -14,10 +14,10 @@ Etherchain Light is an Ethereum blockchain explorer built with NodeJS and Expres
 ### Future features
 * ERC20 Token support
 * Signature verification
-* HTTP JSON-RPC support
+* Load balanced HTTP JSON-RPC support
 
 ## Usage notes
-This blockchain explorer is intended for private Ethereum chains. As it does not have a dedicated database all data will be retrived on demand from a backend Parity node. Some of those calls are ressource intensive (e.g. retrieval of the full tx list of an account) and do not scale well for acounts with a huge number of transactions. We currently develop the explorer using the Kovan testnet but it will work with every Parity compatible Ethereum network configuration. Ethe explorer is still under heavy development. If you find any problems please create an issue or prepare a pull request.
+This blockchain explorer is intended for private Ethereum chains. As it does not have a dedicated database all data will be retrived on demand from a backend Parity node. Some of those calls are ressource intensive (e.g. retrieval of the full tx list of an account) and do not scale well for acounts with a huge number of transactions. We currently develop the explorer using the Kovan testnet but it will work with every Parity compatible Ethereum network configuration. The explorer is still under heavy development, if you find any problems please create an issue or prepare a pull request.
 
 ### Getting started
 1. Setup a nodejs & npm environment
