@@ -1,7 +1,7 @@
 # Etherchain Light
 ### Portable blockchain explorer for your private Ethereum chain
 
-Etherchain Light is a Ethereum blockchain explorer built with NodeJS and Express. It does not require an external database and retrieves all information on the fly from a backend Parity Ethereum node.
+Etherchain Light is an Ethereum blockchain explorer built with NodeJS and Express. It does not require an external database and retrieves all information on the fly from a backend Parity Ethereum node.
 
 ### Features
 * Browse blocks, transactions, accounts and contracts
