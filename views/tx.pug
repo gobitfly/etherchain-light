@@ -1,0 +1,84 @@
+extends layout
+
+block content
+  h3 Transaction #{tx.hash}
+  table.table
+    tr
+      td Hash: 
+      td
+        a(href="/tx/" + tx.hash) #{tx.hash}
+    tr
+      td Block hash: 
+      td
+        a(href="/block/" + tx.blockHash) #{tx.blockHash}
+    tr
+      td Block number: 
+      td
+        a(href="/block/" + tx.blockNumber) #{tx.blockNumber}
+    tr
+      td From:
+      td
+        a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+    tr
+      td To:
+      td
+        if tx.to
+          a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+        else
+          | New Contract
+    tr
+      td Amount:
+      td #{ethformatter(tx.value)}
+    tr
+      td Nonce:
+      td #{tx.nonce}
+    tr
+      td Gas Limit:
+      td #{tx.gas}
+    tr
+      td Gas Price: 
+      td #{ethformatter(tx.gasPrice)}
+    tr
+      td Fee:
+      td #{ethformatter(tx.gasUsed * tx.gasPrice)}
+    tr
+      td Data:
+      td
+        pre #{tx.input}
+    
+  a(href="/tx/raw/" + tx.hash) Raw Trace
+  h4 Internal Transactions
+  table.table
+    thead
+      tr
+        th
+        th Type
+        th From
+        th To
+        th Amount
+    tbody
+      for trace in tx.traces
+        tr
+          td.text-right
+            if trace.error
+              span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
+              |  
+          td.capitalize #{trace.type}
+          if trace.type === "call"
+            td
+              a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+            td 
+              a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+            td #{ethformatter(trace.action.value)}
+          else if trace.type === "create"
+            td
+              a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+            td
+              a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+            td #{ethformatter(trace.action.value)}
+          else if trace.type === "suicide"
+            td
+              a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+            td
+              a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+            td #{ethformatter(trace.action.balance)}

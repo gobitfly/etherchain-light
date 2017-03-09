@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  h3 Raw Transaction trace for #{tx.hash}
+  h4 Trace
+  pre #{JSON.stringify(tx.traces, null, 4)}

@@ -1,0 +1,39 @@
+doctype html
+html
+  head
+    title= title
+    link(href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css", rel="stylesheet", integrity="sha384-HzUaiJdCTIY/RL2vDPRGdEQHHahjzwoJJzGUkYjHVzTwXFQ2QN/nVgX7tzoMW3Ov", crossorigin="anonymous")
+    
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          |  
+          a.navbar-brand(href='/') Etherchain Light
+        #navbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/') Home
+            li
+              a(href='/tx/pending') Pending Tx
+            li
+              a(href='/contract/verify') Verify Contract
+          form.navbar-form.navbar-right(action="/search", method="POST")
+            .form-group
+              input.form-control#search(type='text', placeholder='Block / Tx / Account', name='search')
+            |  
+            button.btn.btn-default(type='submit') Submit
+    .container      
+      block content
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+    script.
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })

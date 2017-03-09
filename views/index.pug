@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  h3 Recent blocks
+  table.table
+    thead
+      tr
+        th Number
+        th Miner
+        th Timestamp
+        th # Tx
+    tbody
+      for block in blocks
+        tr
+          td
+            a(href="/block/" + block.number) #{block.number}
+          td 
+            a(href="/account/" + block.author) #{nameformatter.format(block.author)}
+          td #{moment.unix(block.timestamp).format()}
+          td #{block.transactions.length}
+  h3 Recent Transactions
+  if txs.length === 0
+    p No transactions during the last 10 blocks
+  else
+    table.table
+      thead
+        tr
+          th Hash
+          th From
+          th To
+          th Amount
+      tbody
+        for tx in txs
+          tr
+            td
+              a(href="/tx/" + tx.hash) #{tx.hash.substr(0,10)}...
+            td
+              a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+            td
+              if tx.to
+                a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+              else
+                | New Contract
+            td #{tx.value}

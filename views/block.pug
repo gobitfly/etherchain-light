@@ -1,0 +1,99 @@
+extends layout
+
+block content
+  
+  .row
+    .col-md-1
+      a.btn.btn-primary(href="/block/" + (block.number - 1), role="button") Previous
+    .col-md-10.text-center
+      h3 Block #{block.number}
+    .col-md-1
+      a.btn.btn-primary(href="/block/" + (block.number + 1), role="button") Next
+
+  table.table
+    tr
+      td Hash:
+      td #{block.hash}
+    tr
+      td Parent hash: 
+      td 
+        a(href="/block/" + block.parentHash) #{block.parentHash}
+    tr
+      td Miner: 
+      td  
+        a(href="/account/" + block.author) #{nameformatter.format(block.author)}
+    tr
+      td Gas Limit:
+      td #{numeral(block.gasLimit).format()}
+    tr
+      td Gas Used:
+      td #{numeral(block.gasUsed).format()}
+    tr
+      td Difficulty:
+      td #{numeral(block.difficulty).format()}
+    tr
+      td Total Difficulty:
+      td #{numeral(block.totalDifficulty).format()}
+    tr
+      td Timestamp:
+      td #{moment.unix(block.timestamp).format()} (#{moment.unix(block.timestamp).fromNow()})
+    tr
+      td Size:
+      td #{numeral(block.size).format()}
+    tr
+      td Transactions:
+      td #{block.transactions.length}
+  
+  h4 Transactions
+  if block.transactions.length === 0
+    p Block does not contain any transactions.
+  else
+    table.table
+      thead
+        tr
+          th Hash
+          th Type
+          th From
+          th To
+          th Amount
+      tbody
+        for tx in block.transactions
+          tr
+            td
+              if tx.error
+                span(style="color: red", data-toggle="tooltip", data-placement="left", title=tx.error).glyphicon.glyphicon-warning-sign
+              a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
+            td Tx
+            td
+              a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+            td
+              if tx.to
+                a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+              else
+                | New Contract
+            td #{ethformatter(tx.value)}
+          for trace in tx.traces
+            tr
+              td.text-right
+                if trace.error
+                  span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
+                span.glyphicon.glyphicon-arrow-right
+              td.capitalize #{trace.type}
+              if trace.type === "call"
+                td
+                  a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                td 
+                  a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+                td #{ethformatter(trace.action.value)}
+              else if trace.type === "create"
+                td
+                  a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                td
+                  a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+                td #{ethformatter(trace.action.value)}
+              else if trace.type === "suicide"
+                td
+                  a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+                td
+                  a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+                td #{ethformatter(trace.action.balance)}

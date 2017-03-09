@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h3 Pending Transactions
+  
+  if txs.length === 0
+    p Currently there are no pending transactions
+  else
+    table.table
+      thead
+        tr
+          th Hash
+          th From
+          th To
+          th Amount
+          th Gas Price
+      tbody
+        for tx in txs
+          tr
+            td
+              a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
+            td
+              a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+            td
+              if tx.to
+                a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+              else
+                | New Contract
+            td #{ethformatter(tx.value)}
+            td #{ethformatter(tx.gasPrice)}
