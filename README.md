@@ -15,13 +15,14 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * View failed transactions
 * Live Backend Node status display
 * Submit signed Transactions to the Network
+* Support for all [Bootswatch](https://bootswatch.com/) skins
+* Accounts enumeration
 
 ## Planned features
 * ERC20 Token support
 * Signature verification
 * Load balanced HTTP JSON-RPC backend support
 * Contract state evaluation
-* Accounts enumeration
 
 Missing a feature? Please request it by creating a new [Issue](https://github.com/gobitfly/etherchain-light/issues).
 

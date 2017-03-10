@@ -2,7 +2,7 @@ doctype html
 html
   head
     title= title
-    link(href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css", rel="stylesheet", integrity="sha384-HzUaiJdCTIY/RL2vDPRGdEQHHahjzwoJJzGUkYjHVzTwXFQ2QN/nVgX7tzoMW3Ov", crossorigin="anonymous")
+    link(href=config.boostrapUrl, rel="stylesheet", crossorigin="anonymous")
     
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
@@ -20,6 +20,8 @@ html
           ul.nav.navbar-nav
             li
               a(href='/') Home
+            li
+              a(href='/accounts') Accounts
             li
               a(href='/tx/pending') Pending Tx
             li

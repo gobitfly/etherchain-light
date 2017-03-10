@@ -4,8 +4,9 @@ var net = require('net');
 var config = function () {
   
   this.ipcPath = process.env["HOME"] + "/.local/share/io.parity.ethereum/jsonrpc.ipc";
-
   this.provider = new web3.providers.IpcProvider(this.ipcPath, net);
+  
+  this.boostrapUrl = "https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css";
   
   this.names = {
     "0x007733a1fe69cf3f2cf989f81c7b4cac1693387a": "POA-Digix",
@@ -18,6 +19,7 @@ var config = function () {
     "0x00a0a24b9f0e5ec7aa4c7389b8302fd0123194de": "POA-GridS",
     "0x00427feae2419c15b89d1c21af10d1b6650a4d3d": "POA-Attores"    
   }
+  
 }
 
 module.exports = config;

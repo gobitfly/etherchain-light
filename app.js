@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var block = require('./routes/block');
 var tx = require('./routes/tx');
 var account = require('./routes/account');
+var accounts = require('./routes/accounts');
 var contract = require('./routes/contract');
 var search = require('./routes/search');
 
@@ -40,10 +41,13 @@ app.locals.numeral = require('numeral');
 app.locals.ethformatter = require('./utils/ethformatter.js');
 app.locals.nameformatter = new(require('./utils/nameformatter.js'))(config);
 app.locals.nodeStatus = new(require('./utils/nodeStatus.js'))(config);
+app.locals.config = config;
+
 app.use('/', index);
 app.use('/block', block);
 app.use('/tx', tx);
 app.use('/account', account);
+app.use('/accounts', accounts);
 app.use('/contract', contract);
 app.use('/search', search);
 

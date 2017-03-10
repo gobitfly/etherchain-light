@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h3 Accounts
+  table.table
+    thead
+      tr
+        th Address
+        th Type
+        th Balance
+    tbody
+      for account in accounts
+        tr
+          td 
+            a(href="/account/" + account.address) #{nameformatter.format(account.address)}
+          td #{account.type}
+          td #{ethformatter(account.balance)}
+  a.btn.btn-default(href="/accounts/" + lastAccount) Next Page
