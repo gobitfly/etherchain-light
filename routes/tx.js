@@ -27,6 +27,35 @@ router.get('/pending', function(req, res, next) {
   });
 });
 
+
+router.get('/submit', function(req, res, next) {  
+  res.render('tx_submit', { });
+});
+
+router.post('/submit', function(req, res, next) {
+  if (!req.body.txHex) {
+    return res.render('tx_submit', { message: "No transaction data specified"});
+  }
+  
+  var config = req.app.get('config');  
+  var web3 = new Web3();
+  web3.setProvider(config.provider);
+  
+  async.waterfall([
+    function(callback) {
+      web3.eth.sendRawTransaction(req.body.txHex, function(err, result) {
+        callback(err, result);
+      });
+    }
+  ], function(err, hash) {
+    if (err) {
+      res.render('tx_submit', { message: "Error submitting transaction: " + err });
+    } else {
+      res.render('tx_submit', { message: "Transaction submitted. Hash: " + hash });
+    }
+  })
+});
+
 router.get('/:tx', function(req, res, next) {
   
   var config = req.app.get('config');  
@@ -95,6 +124,5 @@ router.get('/raw/:tx', function(req, res, next) {
     res.render('tx_raw', { tx: tx });
   });
 });
-
 
 module.exports = router;

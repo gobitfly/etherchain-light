@@ -14,14 +14,14 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * Advanced transaction tracing (VM Traces & State Diff)
 * View failed transactions
 * Live Backend Node status display
+* Submit signed Transactions to the Network
 
 ## Planned features
 * ERC20 Token support
 * Signature verification
-* Load balanced HTTP JSON-RPC support
+* Load balanced HTTP JSON-RPC backend support
 * Contract state evaluation
 * Accounts enumeration
-* Submit Raw Transactions
 
 ## Usage notes
 This blockchain explorer is intended for private Ethereum chains. As it does not have a dedicated database all data will be retrived on demand from a backend Parity node. Some of those calls are ressource intensive (e.g. retrieval of the full tx list of an account) and do not scale well for acounts with a huge number of transactions. We currently develop the explorer using the Kovan testnet but it will work with every Parity compatible Ethereum network configuration. The explorer is still under heavy development, if you find any problems please create an issue or prepare a pull request.

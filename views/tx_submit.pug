@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h3 Submit raw transaction
+  form(action="/tx/submit", method="post")
+    .form-group
+      label(for="txHex") Signed Transaction Hex
+      textarea.form-control#txHex(rows=15, name="txHex", placeholder="0x...")
+    button.btn.btn-default.pull-right(type="submit") Submit
+  if message
+    p #{message}
