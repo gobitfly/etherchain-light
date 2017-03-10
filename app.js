@@ -12,7 +12,7 @@ var account = require('./routes/account');
 var contract = require('./routes/contract');
 var search = require('./routes/search');
 
-var config = require('./config.js');
+var config = new(require('./config.js'))();
 
 var levelup = require('levelup');
 var db = levelup('./data');

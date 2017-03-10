@@ -3,15 +3,14 @@ var router = express.Router();
 
 var async = require('async');
 var Web3 = require('web3');
-var net = require('net');
 
 
 
 router.get('/pending', function(req, res, next) {
+  
   var config = req.app.get('config');  
   var web3 = new Web3();
-
-  web3.setProvider(new web3.providers.IpcProvider(config.backend, net));
+  web3.setProvider(config.provider);
   
   async.waterfall([
     function(callback) {
@@ -32,8 +31,7 @@ router.get('/:tx', function(req, res, next) {
   
   var config = req.app.get('config');  
   var web3 = new Web3();
-
-  web3.setProvider(new web3.providers.IpcProvider(config.backend, net));
+  web3.setProvider(config.provider);
   
   async.waterfall([
     function(callback) {
@@ -72,10 +70,10 @@ router.get('/:tx', function(req, res, next) {
 });
 
 router.get('/raw/:tx', function(req, res, next) {
+  
   var config = req.app.get('config');  
   var web3 = new Web3();
-
-  web3.setProvider(new web3.providers.IpcProvider(config.backend, net));
+  web3.setProvider(config.provider);
   
   async.waterfall([
     function(callback) {

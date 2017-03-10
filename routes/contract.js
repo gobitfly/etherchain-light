@@ -6,7 +6,6 @@ var exec = require('child_process').exec;
 var tmp = require('tmp');
 var fs = require('fs');
 var Web3 = require('web3');
-var net = require('net');
 
 var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
 
@@ -18,8 +17,7 @@ router.post('/verify', function(req, res, next) {
 
   var config = req.app.get('config');  
   var web3 = new Web3();
-
-  web3.setProvider(new web3.providers.IpcProvider(config.backend, net));
+  web3.setProvider(config.provider);
   
   var contractAddress = req.body.contractAddress.toLowerCase();
   var contractName = req.body.contractName;

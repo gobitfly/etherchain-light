@@ -1,6 +1,13 @@
-var config = {
-  "backend": process.env["HOME"] + "/.local/share/io.parity.ethereum/jsonrpc.ipc",
-  "names": {
+var web3 = require('web3');
+var net = require('net');
+
+var config = function () {
+  
+  this.ipcPath = process.env["HOME"] + "/.local/share/io.parity.ethereum/jsonrpc.ipc";
+
+  this.provider = new web3.providers.IpcProvider(this.ipcPath, net);
+  
+  this.names = {
     "0x007733a1fe69cf3f2cf989f81c7b4cac1693387a": "POA-Digix",
     "0x00e4a10650e5a6d6001c38ff8e64f97016a1645c": "POA-Aurel",
     "0x00e6d2b931f55a3f1701c7389d592a7778897879": "POA-Maker",

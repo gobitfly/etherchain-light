@@ -3,14 +3,12 @@ var router = express.Router();
 
 var async = require('async');
 var Web3 = require('web3');
-var net = require('net');
 
 router.get('/:account', function(req, res, next) {
   
   var config = req.app.get('config');  
   var web3 = new Web3();
-
-  web3.setProvider(new web3.providers.IpcProvider(config.backend, require('net')));
+  web3.setProvider(config.provider);
   
   var db = req.app.get('db');
   
