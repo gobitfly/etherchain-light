@@ -6,7 +6,7 @@ var config = function () {
   this.ipcPath = process.env["HOME"] + "/.local/share/io.parity.ethereum/jsonrpc.ipc";
   this.provider = new web3.providers.IpcProvider(this.ipcPath, net);
   
-  this.boostrapUrl = "https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css";
+  this.bootstrapUrl = "https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css";
   
   this.names = {
     "0x007733a1fe69cf3f2cf989f81c7b4cac1693387a": "POA-Digix",
