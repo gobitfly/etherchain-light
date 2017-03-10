@@ -39,7 +39,7 @@ app.locals.moment = require('moment');
 app.locals.numeral = require('numeral');
 app.locals.ethformatter = require('./utils/ethformatter.js');
 app.locals.nameformatter = new(require('./utils/nameformatter.js'))(config);
-
+app.locals.nodeStatus = new(require('./utils/nodeStatus.js'))(config);
 app.use('/', index);
 app.use('/block', block);
 app.use('/tx', tx);
