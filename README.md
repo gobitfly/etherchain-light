@@ -10,7 +10,7 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * View pending transactions
 * Display contract internal calls (call, create, suicide)
 * Upload & verify contract sources
-* Name accounts
+* Named accounts
 * Advanced transaction tracing (VM Traces & State Diff)
 * View failed transactions
 * Live Backend Node status display
