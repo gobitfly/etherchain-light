@@ -10,6 +10,7 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * View pending transactions
 * Display contract internal calls (call, create, suicide)
 * Upload & verify contract sources
+* Display the current state of verified contracts
 * Named accounts
 * Advanced transaction tracing (VM Traces & State Diff)
 * View failed transactions
@@ -18,11 +19,11 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * Support for all [Bootswatch](https://bootswatch.com/) skins
 * Accounts enumeration
 * Signature verification
+* Display the current state of verified contracts
 
 ## Planned features
 * ERC20 Token support
 * Load balanced HTTP JSON-RPC backend support
-* Contract state evaluation
 
 Missing a feature? Please request it by creating a new [Issue](https://github.com/gobitfly/etherchain-light/issues).
 

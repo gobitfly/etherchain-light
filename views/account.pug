@@ -24,6 +24,8 @@ block content
       if account.source
         li(role='presentation')
           a(href='#source', aria-controls='source', role='tab', data-toggle='tab') Source
+        li(role='presentation')
+          a(href='#contractState', aria-controls='source', role='tab', data-toggle='tab') Contract State
     .tab-content
       #transactions.tab-pane.active(role='tabpanel')
         h3 Last Transactions
@@ -86,6 +88,8 @@ block content
       if account.isContract
         #code.tab-pane(role='tabpanel')
           h3 Code
+          if !account.source
+            a(href="/contract/verify") Upload source
           pre #{account.code}
       if account.source
         #source.tab-pane(role='tabpanel')
@@ -95,3 +99,15 @@ block content
           pre #{account.source.abi}
           h4 Constructor
           pre #{account.source.constructorArgs}
+        #contractState.tab-pane(role='tabpanel')
+          h4 Current contract state
+          table.table
+            thead
+              tr
+                th Function
+                th Result
+            tbody
+              for item in account.contractState
+                tr
+                  td #{item.name}
+                  td #{item.result}

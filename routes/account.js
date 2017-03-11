@@ -42,8 +42,36 @@ router.get('/:account', function(req, res, next) {
       
       if (source) {
         data.source = JSON.parse(source);
+        
+        var abi = JSON.parse(data.source.abi);
+        var contract = web3.eth.contract(abi).at(req.params.account);
+        
+        data.contractState = [];
+        
+        async.eachSeries(abi, function(item, eachCallback) {
+          if (item.type === "function" && item.inputs.length === 0 && item.constant) {
+            try {
+              contract[item.name](function(err, result) {
+                data.contractState.push({ name: item.name, result: result });
+                eachCallback();
+              });
+            } catch(e) {
+              console.log(e);
+              eachCallback();
+            }
+          } else {
+            eachCallback();
+          }
+        }, function(err) {
+          callback(err);
+        });
+        
+      } else {
+        callback();
       }
       
+      
+    }, function(callback) {
       web3.trace.filter({ "fromBlock": "0x00", "fromAddress": [ req.params.account ] }, function(err, traces) {
         callback(err, traces);
       });
