@@ -11,6 +11,7 @@
     "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.0",
+    "ethereumjs-util": "^5.1.1",
     "express": "~4.14.1",
     "level": "^1.6.0",
     "leveldown": "^1.6.0",

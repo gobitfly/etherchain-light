@@ -10,7 +10,7 @@ var Web3 = require('web3');
 var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
 
 router.get('/verify', function(req, res, next) {  
-  res.render('verify', { versions: versions });
+  res.render('verifyContract', { versions: versions });
 });
 
 router.post('/verify', function(req, res, next) {
@@ -23,22 +23,22 @@ router.post('/verify', function(req, res, next) {
   var contractName = req.body.contractName;
   var contractSource = req.body.contractSource;
   var compilerVersion = req.body.compilerVersion;
-  var optimize = req.body.useOptimizations ? true : false
+  var optimize = req.body.useOptimizations ? true : false;
   
   if (!contractAddress) {
-    res.render('verify', { versions: versions, message: "No contract address provided." });
+    res.render('verifyContract', { versions: versions, message: "No contract address provided." });
     return;
   }
   if (!contractName) {
-    res.render('verify', { versions: versions, message: "No contract name provided." });
+    res.render('verifyContract', { versions: versions, message: "No contract name provided." });
     return;
   }
   if (!contractSource) {
-    res.render('verify', { versions: versions, message: "No contract source provided." });
+    res.render('verifyContract', { versions: versions, message: "No contract source provided." });
     return;
   }
   if (!compilerVersion) {
-    res.render('verify', { versions: versions, message: "No compiler version provided." });
+    res.render('verifyContract', { versions: versions, message: "No compiler version provided." });
     return;
   }
   
@@ -131,9 +131,9 @@ router.post('/verify', function(req, res, next) {
     }
   ], function(err) {
     if (err) {
-      res.render('verify', { versions: versions, message: "Error during contract verification: " + err });
+      res.render('verifyContract', { versions: versions, message: "Error during contract verification: " + err });
     } else {
-      res.render('verify', { versions: versions, message: "Contract verification successful." });
+      res.render('verifyContract', { versions: versions, message: "Contract verification successful." });
     }
   });
 });

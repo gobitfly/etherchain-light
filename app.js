@@ -11,6 +11,7 @@ var tx = require('./routes/tx');
 var account = require('./routes/account');
 var accounts = require('./routes/accounts');
 var contract = require('./routes/contract');
+var signature = require('./routes/signature');
 var search = require('./routes/search');
 
 var config = new(require('./config.js'))();
@@ -49,6 +50,7 @@ app.use('/tx', tx);
 app.use('/account', account);
 app.use('/accounts', accounts);
 app.use('/contract', contract);
+app.use('/signature', signature);
 app.use('/search', search);
 
 // catch 404 and forward to error handler

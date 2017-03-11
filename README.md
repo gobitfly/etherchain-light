@@ -17,10 +17,10 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * Submit signed Transactions to the Network
 * Support for all [Bootswatch](https://bootswatch.com/) skins
 * Accounts enumeration
+* Signature verification
 
 ## Planned features
 * ERC20 Token support
-* Signature verification
 * Load balanced HTTP JSON-RPC backend support
 * Contract state evaluation
 
