@@ -19,7 +19,6 @@ While there are several excellent Ethereum blockchain explorers available (ether
 * Support for all [Bootswatch](https://bootswatch.com/) skins
 * Accounts enumeration
 * Signature verification
-* Display the current state of verified contracts
 
 ## Planned features
 * ERC20 Token support
