@@ -110,7 +110,7 @@ router.get('/:account', function(req, res, next) {
     
     data.blocks = [];
     var txCounter = 0;
-    for (block in blocks) {
+    for (var block in blocks) {
       data.blocks.push(blocks[block]);
       txCounter++;
     }

@@ -84,7 +84,7 @@ router.post('/verify', function(req, res, next) {
           return;
         }
         
-        var data = {}
+        var data = {};
         try {
           data = JSON.parse(fs.readFileSync(outputName).toString());
         } catch (e) {
@@ -98,7 +98,7 @@ router.post('/verify', function(req, res, next) {
         for (var contract in data.contracts) {
           if (contract === ":" + contractName || contract === contractName) {
             contractBytecode = "0x" + data.contracts[contract].bytecode;
-            abi = data.contracts[contract]["interface"];
+            abi = data.contracts[contract].interface;
           }
         }
         
@@ -108,7 +108,7 @@ router.post('/verify', function(req, res, next) {
         
         // Check if we have any constructor arguments
         var constructorArgs = "";
-        if (blockchainBytecodeClean.indexOf(contractBytecodeClean) == 0) {
+        if (blockchainBytecodeClean.indexOf(contractBytecodeClean) === 0) {
           constructorArgs = blockchainBytecodeClean.replace(contractBytecodeClean, "");
           blockchainBytecodeClean = blockchainBytecodeClean.replace(constructorArgs, "");
         }

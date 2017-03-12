@@ -53,7 +53,7 @@ router.post('/submit', function(req, res, next) {
     } else {
       res.render('tx_submit', { message: "Transaction submitted. Hash: " + hash });
     }
-  })
+  });
 });
 
 router.get('/:tx', function(req, res, next) {
