@@ -74,7 +74,10 @@ block content
             td
               a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
             td
-              a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+              if trace.result
+                a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+              else
+                div #{'-'}
             td #{ethformatter(trace.action.value)}
           else if trace.type === "suicide"
             td
