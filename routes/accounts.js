@@ -17,6 +17,11 @@ router.get('/:offset?', function(req, res, next) {
     }, function(accounts, callback) {
       
       var data = {};
+      
+      if (accounts.length === 0) {
+        return callback({name:"NoAccountsFound", message: "Chain contains no accounts."});
+      }
+      
       var lastAccount = accounts[accounts.length - 1];
       
       async.eachSeries(accounts, function(account, eachCallback) {
