@@ -21,10 +21,10 @@ A demo instance connected to the Kovan Ethereum testnet is available at [light.e
 * Support for all [Bootswatch](https://bootswatch.com/) skins
 * Accounts enumeration
 * Signature verification
+* Supports IPC and HTTP backend connections
 
 ## Planned features
 * ERC20 Token support
-* Load balanced HTTP JSON-RPC backend support
 
 Missing a feature? Please request it by creating a new [Issue](https://github.com/gobitfly/etherchain-light/issues).
 
