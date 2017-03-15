@@ -76,7 +76,6 @@ router.get('/:tx', function(req, res, next) {
     if (err) {
       return next(err);
     }
-    
 
     tx.traces = [];
     tx.failed = false;

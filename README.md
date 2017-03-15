@@ -45,4 +45,4 @@ Supported Ethereum backend nodes: Parity (Geth is currently not supported as it 
 8. Browse to `http://localhost:3000`
 
 ## Live Demo
-A demo instance connected to the Kovan Ethereum testnet is available at [light.etherchain.org](http://light.etherchain.org).
+A demo instance connected to the Kovan Ethereum testnet is available at [light.etherchain.org](http://light.etherchain.org). An example of a verified contract source can be found at [0x0cf37d2d45427a1380db12c9b352d6f083143817](https://light.etherchain.org/account/0x0cf37d2d45427a1380db12c9b352d6f083143817).
