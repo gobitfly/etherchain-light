@@ -5,6 +5,8 @@ Etherchain Light is an Ethereum blockchain explorer built with NodeJS, Express a
 
 While there are several excellent Ethereum blockchain explorers available (etherscan, ether.camp and etherchain) they operate on a fixed subset of Ethereum networks, usually the mainnet and testnet. Currently there are no network agnostic blockchain explorers available. If you want to develop Dapps on a private testnet or would like to launch a private / consortium network, Etherchain Light will allow you to quickly explore such chains.
 
+A demo instance connected to the Kovan Ethereum testnet is available at [light.etherchain.org](http://light.etherchain.org). An example of a verified contract source can be found at [0x0cf37d2d45427a1380db12c9b352d6f083143817](https://light.etherchain.org/account/0x0cf37d2d45427a1380db12c9b352d6f083143817).
+
 ## Current Features
 * Browse blocks, transactions, accounts and contracts
 * View pending transactions
@@ -43,6 +45,3 @@ Supported Ethereum backend nodes: Parity (Geth is currently not supported as it 
 6. Rename `config.js.example` into `config.js` and adjust the file to your local environment
 7. Start the explorer: `npm start`
 8. Browse to `http://localhost:3000`
-
-## Live Demo
-A demo instance connected to the Kovan Ethereum testnet is available at [light.etherchain.org](http://light.etherchain.org). An example of a verified contract source can be found at [0x0cf37d2d45427a1380db12c9b352d6f083143817](https://light.etherchain.org/account/0x0cf37d2d45427a1380db12c9b352d6f083143817).
