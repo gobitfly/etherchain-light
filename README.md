@@ -44,14 +44,5 @@ Supported Ethereum backend nodes: Parity (Geth is currently not supported as it 
 7. Start the explorer: `npm start`
 8. Browse to `http://localhost:3000`
 
-## Screenshots
-### Main page
-![Main page](http://i.imgur.com/gl15FJS.png "Main page")
-### Block View
-![Block View](http://i.imgur.com/fQjkyiX.png "Block View")
-### Tx View
-![Tx View](http://i.imgur.com/sysfrcf.png "Tx View")
-### Tx Trace View
-![Tx Trace View](http://i.imgur.com/44qSIM4.png "Tx Trace View")
-### Account View
-![Account View](http://i.imgur.com/ynOha7F.png "Account View")
+## Live Demo
+A demo instance connected to the Kovan Ethereum testnet is available at [light.etherchain.org](http://light.etherchain.org).
