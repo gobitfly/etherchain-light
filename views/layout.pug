@@ -1,10 +1,20 @@
 doctype html
-html
+html(lang="en")
   head
-    title Etherchain Light
-    link(href=config.bootstrapUrl, rel="stylesheet", crossorigin="anonymous")
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
+    // The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
     
+    meta(name='description', content='The explorer for the Ethereum blockchain')
+    meta(name='author', content='bitfly')
+    meta(name='keywords', content='ethereum, explorer, blockchain, etherchain, cryptocurrency, cryptocurrencies, bitcoin')
+        
+    title Etherchain Light
+    
+    link(href=config.bootstrapUrl, rel="stylesheet", crossorigin="anonymous")    
     link(rel='stylesheet', href='/stylesheets/style.css')
+    
   body
     nav.navbar.navbar-inverse.navbar-fixed-top
       .container

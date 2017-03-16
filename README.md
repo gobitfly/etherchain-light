@@ -22,6 +22,7 @@ A demo instance connected to the Kovan Ethereum testnet is available at [light.e
 * Accounts enumeration
 * Signature verification
 * Supports IPC and HTTP backend connections
+* Responsive layout
 
 ## Planned features
 * ERC20 Token support
