@@ -19,7 +19,13 @@ router.get('/', function(req, res, next) {
     }, function(lastBlock, callback) {
       var blocks = [];
       
-      async.times(10, function(n, next) {
+      var blockCount = 10;
+      
+      if (lastBlock.number - blockCount < 0) {
+        blockCount = lastBlock.number + 1;
+      }
+      
+      async.times(blockCount, function(n, next) {
         web3.eth.getBlock(lastBlock.number - n, true, function(err, block) {
           next(err, block);
         });
