@@ -18,7 +18,7 @@ router.get('/:offset?', function(req, res, next) {
       
       var data = {};
       
-      if (accounts.length === 0) {
+      if (accounts === null) {
         return callback({name:"NoAccountsFound", message: "Chain contains no accounts."});
       }
       
