@@ -41,6 +41,31 @@ block content
     tr
       td Fee:
       td #{ethformatter(tx.gasUsed * tx.gasPrice)}
+    if tx.callInfo
+      tr
+        td Function Name:
+        td #{tx.callInfo.name}
+      tr
+        td Parameters:
+        td
+          table.table
+            thead
+              tr
+                th Name
+                th Type
+                th Value
+            tbody
+              for pa in tx.callInfo.inputs
+                tr
+                  td #{pa.name}
+                  td #{pa.type}
+                  if pa.type === "bytes"
+                    td
+                      pre 0x#{pa.result.toString("hex")}
+                  else if pa.type === "uint256"
+                    td.parameter-cell #{pa.result.toString(10)}
+                  else                    
+                    td.parameter-cell #{JSON.stringify(pa.result, null, 2)}
     tr
       td Data:
       td
