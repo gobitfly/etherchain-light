@@ -21,6 +21,12 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(lastBlock, callback) {
       data.lastBlock = lastBlock.number;
+      //limits the from block to -1000 blocks ago if block count is greater than 1000
+       if(data.lastBlock > 0x3E8){
+         data.fromBlock = data.lastBlock - 0x3e8;
+        }else{
+          data.fromBlock = "0x00";
+        }
       web3.eth.getBalance(req.params.account, function(err, balance) {
         callback(err, balance);
       });
@@ -72,12 +78,12 @@ router.get('/:account', function(req, res, next) {
       
       
     }, function(callback) {
-      web3.trace.filter({ "fromBlock": "0x00", "fromAddress": [ req.params.account ] }, function(err, traces) {
+      web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "fromAddress": [ req.params.account ] }, function(err, traces) {
         callback(err, traces);
       });
     }, function(tracesSent, callback) {
       data.tracesSent = tracesSent;
-      web3.trace.filter({ "fromBlock": "0x00", "toAddress": [ req.params.account ] }, function(err, traces) {
+      web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "toAddress": [ req.params.account ] }, function(err, traces) {
         callback(err, traces);
       });
     }
