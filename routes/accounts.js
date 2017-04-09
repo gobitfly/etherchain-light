@@ -18,7 +18,11 @@ router.get('/:offset?', function(req, res, next) {
       
       var data = {};
       
-      if (accounts === null) {
+      if (!accounts) {
+        return callback({name:"FatDBDisabled", message: "Parity FatDB system is not enabled. Please restart Parity with the --fat-db=on parameter."});
+      }
+      
+      if (accounts.length === 0) {
         return callback({name:"NoAccountsFound", message: "Chain contains no accounts."});
       }
       
