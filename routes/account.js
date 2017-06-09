@@ -25,7 +25,7 @@ router.get('/:account', function(req, res, next) {
        if(data.lastBlock > 0x3E8){
          data.fromBlock = data.lastBlock - 0x3e8;
         }else{
-          data.fromBlock = "0x00";
+          data.fromBlock = 0x00;
         }
       web3.eth.getBalance(req.params.account, function(err, balance) {
         callback(err, balance);
