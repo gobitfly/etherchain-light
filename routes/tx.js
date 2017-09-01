@@ -122,16 +122,18 @@ router.get('/:tx', function(req, res, next) {
     tx.traces = [];
     tx.failed = false;
     tx.gasUsed = 0;
+    if (traces != null) {
     traces.forEach(function(trace) {
-      tx.traces.push(trace);
-      if (trace.error) {
-        tx.failed = true;
-        tx.error = trace.error;
-      }
-      if (trace.result && trace.result.gasUsed) {
-        tx.gasUsed += parseInt(trace.result.gasUsed, 16);
-      }
-    });
+        tx.traces.push(trace);
+        if (trace.error) {
+          tx.failed = true;
+          tx.error = trace.error;
+        }
+        if (trace.result && trace.result.gasUsed) {
+          tx.gasUsed += parseInt(trace.result.gasUsed, 16);
+        }
+      });
+    }
     // console.log(tx.traces);
 
     res.render('tx', { tx: tx });
