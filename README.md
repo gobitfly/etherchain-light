@@ -35,6 +35,8 @@ This blockchain explorer is intended for private Ethereum chains. As it does not
 
 ## Getting started
 
+### Setup from source
+
 Supported OS: Ubuntu 16.04
 
 Supported Ethereum backend nodes: Parity (Geth is currently not supported as it does not allow account and received/sent tx enumeration)
@@ -47,3 +49,24 @@ Supported Ethereum backend nodes: Parity (Geth is currently not supported as it 
 6. Rename `config.js.example` into `config.js` and adjust the file to your local environment
 7. Start the explorer: `npm start`
 8. Browse to `http://localhost:3000`
+
+### Setup using docker
+
+Build then run the container
+```bash
+docker build -t etherchain-light .
+docker run -p 3000:3000 etherchain-light
+```
+
+Or directly bind the config.js file to avoid rebuilding the image
+```bash
+docker run -p "3000:3000" \
+    -v "$(pwd)/config.js":/usr/src/app/config.js \
+    etherchain-light
+```
+
+### Setup using docker-compose
+
+```bash
+docker-compose up
+```
