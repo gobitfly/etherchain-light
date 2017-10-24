@@ -70,6 +70,11 @@ router.get('/:tx', function(req, res, next) {
         callback(err, result);
       });
     }, function(result, callback) {
+      
+      if (!result || !result.hash) {
+        return callback({ message: "Transaction hash not found" }, null);
+      }
+      
       web3.trace.transaction(result.hash, function(err, traces) {
         callback(err, result, traces);
       });
