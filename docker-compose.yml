@@ -1,0 +1,8 @@
+version: '2.0'
+
+services:
+  etherchain-light:
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
