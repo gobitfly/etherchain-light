@@ -45,6 +45,7 @@ router.post('/verify', function(req, res, next) {
   async.waterfall([
     function(callback) {
       web3.trace.filter({ "fromBlock": "0x00", "toAddress": [ contractAddress ] }, function(err, traces) {
+        console.log("Received traces");
         callback(err, traces);
       });
     }, function(traces, callback) {
@@ -55,6 +56,8 @@ router.post('/verify', function(req, res, next) {
         }
       });
       
+      
+      console.log("Processed traces");
       if (!creationBytecode) {
         callback("Contract creation transaction not found");
       } else {

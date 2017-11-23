@@ -46,10 +46,12 @@ block content
     tr
       td Uncles:
       td
-        each uncle, index in block.uncles
-          p
-            a(href="uncle/" + block.hash + "/" + index) #{index + " - " + uncle}
-  
+        if block.uncles && block.uncles.length > 0
+          each uncle, index in block.uncles
+            p
+              a(href="uncle/" + block.hash + "/" + index) #{index + " - " + uncle}
+        else
+          | 0
   h4 Transactions
   if block.transactions.length === 0
     p Block does not contain any transactions.

@@ -28,7 +28,7 @@ block content
           a(href='#contractState', aria-controls='source', role='tab', data-toggle='tab') Contract State
     .tab-content
       #transactions.tab-pane.active(role='tabpanel')
-        h3 Last Transactions
+        h3 Recent Activity
         table.table
           thead
             tr
@@ -42,48 +42,61 @@ block content
           tbody
             for block in account.blocks
               for trace in block
-                tr            
-                  td 
-                    a(href="/tx/" + trace.transactionHash)  #{trace.transactionHash.substr(0, 10)}...
-                  td
-                    a(href="/block/" + trace.blockNumber) #{trace.blockNumber}
-                  td.capitalize
-                    if trace.error
-                      span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
-                    |  #{trace.type}
-                  if trace.type === "call"
+                if trace.type === "reward" && trace.action.author === account.address
+                  tr
                     td
-                      if trace.action.from === account.address
-                        span.glyphicon.glyphicon-export(style="color: red;")
-                      else
-                        span.glyphicon.glyphicon-import(style="color: green;")
+                      a(href="/block/" + trace.blockNumber) #{trace.blockHash.substr(0, 10)}...
                     td
-                      a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                      a(href="/block/" + trace.blockNumber) #{trace.blockNumber}
+                    td Mining Reward
+                    td
+                    td New Coins
                     td 
-                      a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+                      a(href="/account/" + trace.action.author) #{nameformatter.format(trace.action.author)}
                     td #{ethformatter(trace.action.value)}
-                  else if trace.type === "create"
+                else if trace.type !== "reward"
+                  tr            
+                    td 
+                      a(href="/tx/" + trace.transactionHash)  #{trace.transactionHash.substr(0, 10)}...
                     td
-                      if trace.action.from === account.address
-                        span.glyphicon.glyphicon-export(style="color: red;")
-                      else
-                        span.glyphicon.glyphicon-import(style="color: green;")
-                    td
-                      a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
-                    td
-                      a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
-                    td #{ethformatter(trace.action.value)}
-                  else if trace.type === "suicide"
-                    td
-                      if trace.action.address === account.address
-                        span.glyphicon.glyphicon-export(style="color: red;")
-                      else
-                        span.glyphicon.glyphicon-import(style="color: green;")
-                    td
-                      a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
-                    td
-                      a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
-                    td #{ethformatter(trace.action.balance)}
+                      a(href="/block/" + trace.blockNumber) #{trace.blockNumber}
+                    td.capitalize
+                      if trace.error
+                        span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
+                      |  #{trace.type}
+                    if trace.type === "call"
+                      td
+                        if trace.action.from === account.address
+                          span.glyphicon.glyphicon-export(style="color: red;")
+                        else
+                          span.glyphicon.glyphicon-import(style="color: green;")
+                      td
+                        a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                      td 
+                        a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+                      td #{ethformatter(trace.action.value)}
+                    else if trace.type === "create"
+                      td
+                        if trace.action.from === account.address
+                          span.glyphicon.glyphicon-export(style="color: red;")
+                        else
+                          span.glyphicon.glyphicon-import(style="color: green;")
+                      td
+                        a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                      td
+                        a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+                      td #{ethformatter(trace.action.value)}
+                    else if trace.type === "suicide"
+                      td
+                        if trace.action.address === account.address
+                          span.glyphicon.glyphicon-export(style="color: red;")
+                        else
+                          span.glyphicon.glyphicon-import(style="color: green;")
+                      td
+                        a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+                      td
+                        a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+                      td #{ethformatter(trace.action.balance)}
       
       if account.isContract
         #code.tab-pane(role='tabpanel')

@@ -22,11 +22,11 @@ router.get('/:account', function(req, res, next) {
     }, function(lastBlock, callback) {
       data.lastBlock = lastBlock.number;
       //limits the from block to -1000 blocks ago if block count is greater than 1000
-       if(data.lastBlock > 0x3E8){
-         data.fromBlock = data.lastBlock - 0x3e8;
-        }else{
-          data.fromBlock = 0x00;
-        }
+      if (data.lastBlock > 0x3E8) {
+        data.fromBlock = data.lastBlock - 0x3e8;
+      } else {
+        data.fromBlock = 0x00;
+      }
       web3.eth.getBalance(req.params.account, function(err, balance) {
         callback(err, balance);
       });
@@ -49,10 +49,13 @@ router.get('/:account', function(req, res, next) {
       if (source) {
         data.source = JSON.parse(source);
         
+        data.contractState = [];
+        if (!data.abi) {
+          return callback();
+        }
         var abi = JSON.parse(data.source.abi);
         var contract = web3.eth.contract(abi).at(req.params.account);
         
-        data.contractState = [];
         
         async.eachSeries(abi, function(item, eachCallback) {
           if (item.type === "function" && item.inputs.length === 0 && item.constant) {
@@ -128,6 +131,7 @@ router.get('/:account', function(req, res, next) {
     }
     
     data.blocks = data.blocks.reverse().splice(0, 100);
+    
     res.render('account', { account: data });
   });
   

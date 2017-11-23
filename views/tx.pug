@@ -58,17 +58,45 @@ block content
                 th Type
                 th Value
             tbody
-              for pa in tx.callInfo.inputs
+              for pa in tx.callInfo.params
                 tr
                   td #{pa.name}
                   td #{pa.type}
-                  if pa.type === "bytes"
+                  if pa.type === "bytes" && pa.value
                     td
-                      pre 0x#{pa.result.toString("hex")}
-                  else if pa.type === "uint256"
-                    td.parameter-cell #{pa.result.toString(10)}
+                      pre 0x#{pa.value.toString("hex")}
+                  else if pa.type === "uint256" && pa.value
+                    td.parameter-cell #{pa.value.toString(10)}
                   else                    
-                    td.parameter-cell #{JSON.stringify(pa.result, null, 2)}
+                    td.parameter-cell #{JSON.stringify(pa.value, null, 2)}
+    if tx.logs
+      tr
+        td Events:
+        td
+          for log in tx.logs
+            table.table
+              thead
+                tr
+                  th Name
+                  th Events
+                  th Address
+              tbody
+                tr
+                  td #{log.name}
+                  td
+                    table.table
+                      thead
+                        tr
+                          th Name
+                          th Type
+                          th Value
+                      tbody
+                        for event in log.events
+                          tr
+                            td #{event.name}
+                            td #{event.type}
+                            td #{event.value}
+                  td #{log.address}
     tr
       td Data:
       td

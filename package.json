@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "abi-decoder": "^1.0.9",
     "async": "^2.1.5",
     "bignumber.js": "^4.0.0",
     "body-parser": "~1.16.0",

@@ -4,7 +4,7 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 var abi = require('ethereumjs-abi');
-
+var abiDecoder = require('abi-decoder');
 
 router.get('/pending', function(req, res, next) {
   
@@ -75,15 +75,19 @@ router.get('/:tx', function(req, res, next) {
         return callback({ message: "Transaction hash not found" }, null);
       }
       
-      web3.trace.transaction(result.hash, function(err, traces) {
-        callback(err, result, traces);
+      web3.eth.getTransactionReceipt(result.hash, function(err, receipt) {
+        callback(err, result, receipt);
       });
-    }, function(tx, traces, callback) {
+    }, function(tx, receipt, callback) {  
+      web3.trace.transaction(tx.hash, function(err, traces) {
+        callback(err, tx, receipt, traces);
+      });
+    }, function(tx, receipt, traces, callback) {
       db.get(tx.to, function(err, value) {
-        callback(null, tx, traces, value);
+        callback(null, tx, receipt, traces, value);
       });
     }
-  ], function(err, tx, traces, source) {
+  ], function(err, tx, receipt, traces, source) {
     if (err) {
       return next(err);
     }
@@ -91,38 +95,14 @@ router.get('/:tx', function(req, res, next) {
     // Try to match the tx to a solidity function call if the contract source is available
     if (source) {
       tx.source = JSON.parse(source);
-      var jsonAbi = JSON.parse(tx.source.abi);
-      
-      var id = tx.input;
-      if (id.length > 10) {
-        id = id.substr(0, 10);
-      }      
-      
-      jsonAbi.forEach(function(item) {
-        if (item.type === "function" && !item.constant) {
-          
-          var functionName = item.name;
-          var functionParams = [];
-          var functionParamsFull = [];
-          item.inputs.forEach(function(input) { 
-            functionParams.push(input.type);
-          });
-          
-          var signature = "0x" + abi.methodID(functionName, functionParams).toString('hex')
-          
-          if (signature === id) {            
-            var pl = tx.input.replace("0x", "");
-            pl = pl.substr(8, pl.length - 8);
-            var decoded = abi.rawDecode(functionParams, pl);
-            
-            for(var i = 0; i < functionParams.length; i++) {
-              item.inputs[i].result = decoded[i];
-            }
-            
-            tx.callInfo = item;
-          }
-        }
-      });
+      try {
+        var jsonAbi = JSON.parse(tx.source.abi);
+        abiDecoder.addABI(jsonAbi);
+        tx.logs = abiDecoder.decodeLogs(receipt.logs);
+        tx.callInfo = abiDecoder.decodeMethod(tx.input);
+      } catch (e) {
+        console.log("Error parsing ABI:", tx.source.abi, e);
+      }
     }
     tx.traces = [];
     tx.failed = false;
@@ -139,8 +119,7 @@ router.get('/:tx', function(req, res, next) {
         }
       });
     }
-    // console.log(tx.traces);
-
+    // console.log(tx.traces);    
     res.render('tx', { tx: tx });
   });
   
