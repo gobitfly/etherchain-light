@@ -99,19 +99,26 @@ router.get('/:account', function(req, res, next) {
     data.tracesReceived = tracesReceived;
     
     var blocks = {};
-    data.tracesSent.forEach(function(trace) {
-      if (!blocks[trace.blockNumber]) {
-        blocks[trace.blockNumber] = [];
+    var rewardBlocks = {};
+    data.tracesSent.forEach(function (trace) {
+      const num = trace.blockNumber;
+      if (!blocks[num]) {
+        blocks[num] = [];
       }
-      
-      blocks[trace.blockNumber].push(trace);
+      if (trace.type !== 'reward' || !rewardBlocks[num]) {
+        blocks[num].push(trace);
+        rewardBlocks[num] = trace.type === 'reward' || rewardBlocks[num];
+      }
     });
-    data.tracesReceived.forEach(function(trace) {
-      if (!blocks[trace.blockNumber]) {
-        blocks[trace.blockNumber] = [];
+    data.tracesReceived.forEach(function (trace) {
+      const num = trace.blockNumber;
+      if (!blocks[num]) {
+        blocks[num] = [];
       }
-      
-      blocks[trace.blockNumber].push(trace);
+      if (trace.type !== 'reward' || !rewardBlocks[num]) {
+        blocks[num].push(trace);
+        rewardBlocks[num] = trace.type === 'reward' || rewardBlocks[num];
+      }
     });
     
     data.tracesSent = null;
