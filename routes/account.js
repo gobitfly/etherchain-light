@@ -50,7 +50,7 @@ router.get('/:account', function(req, res, next) {
         data.source = JSON.parse(source);
         
         data.contractState = [];
-        if (!data.abi) {
+        if (!data.source.abi) {
           return callback();
         }
         var abi = JSON.parse(data.source.abi);
