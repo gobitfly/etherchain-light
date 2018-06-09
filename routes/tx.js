@@ -79,12 +79,8 @@ router.get('/:tx', function(req, res, next) {
         callback(err, result, receipt);
       });
     }, function(tx, receipt, callback) {  
-      web3.trace.transaction(tx.hash, function(err, traces) {
-        callback(err, tx, receipt, traces);
-      });
-    }, function(tx, receipt, traces, callback) {
       db.get(tx.to, function(err, value) {
-        callback(null, tx, receipt, traces, value);
+        callback(null, tx, receipt, null, value);
       });
     }
   ], function(err, tx, receipt, traces, source) {
