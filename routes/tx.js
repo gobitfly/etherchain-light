@@ -102,7 +102,7 @@ router.get('/:tx', function(req, res, next) {
     }
     tx.traces = [];
     tx.failed = false;
-    tx.gasUsed = 0;
+    tx.gasUsed = receipt.gasUsed;
     if (traces != null) {
     traces.forEach(function(trace) {
         tx.traces.push(trace);
