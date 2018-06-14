@@ -103,6 +103,9 @@ router.get('/:tx', function(req, res, next) {
     tx.traces = [];
     tx.failed = false;
     tx.gasUsed = receipt.gasUsed;
+    if (!tx.to) {
+      tx.contractAddress = receipt.contractAddress;
+    }
     if (traces != null) {
     traces.forEach(function(trace) {
         tx.traces.push(trace);
