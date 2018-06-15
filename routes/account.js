@@ -39,8 +39,19 @@ router.get('/:account', function(req, res, next) {
       data.code = code;
       if (code !== "0x") {
         data.isContract = true;
+        web3.debug.storageRangeAt(data.lastBlock.toString(), 0, req.params.account, "0x0", 1000, function(err, result) {
+          callback(err, result.storage);
+        })
+      } else {
+        callback(null, null);
       }
-      
+   }, function(storage, callback) {
+      if (storage) {
+        var listOfStorageKeyVals = Object.values(storage);
+        data.storage = listOfStorageKeyVals;
+      }
+
+      // fetch verified contract source from db      
       db.get(req.params.account.toLowerCase(), function(err, value) {
         callback(null, value);
       });

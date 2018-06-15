@@ -104,6 +104,8 @@ block content
           if !account.source
             a(href="/contract/verify") Upload source
           pre #{account.code}
+          h3 Storage
+          pre #{JSON.stringify(account.storage)}
       if account.source
         #source.tab-pane(role='tabpanel')
           h4 Source
