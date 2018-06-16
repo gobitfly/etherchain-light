@@ -12,9 +12,6 @@ COPY . .
 
 RUN cp config.js.example config.js
 
-RUN npm start
-
 EXPOSE 3000
 
 CMD [ "npm", "start" ]
-
