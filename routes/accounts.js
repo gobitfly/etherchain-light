@@ -13,7 +13,7 @@ router.get('/:offset?', function(req, res, next) {
     function(callback) {
       web3.eth.getBlock('latest', function(err, result) {
         if (err) {
-          cb(err, null)
+          callback(err, null)
           return
         }
 
