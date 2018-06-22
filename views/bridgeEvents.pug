@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h3 BridgeEvents
+    table.table
+        thead
+            tr
+                th ID
+                th Name
+        tbody
+            for bridgeEvent in bridgeEvents
+                tr
+                    td #{bridgeEvent.id}
+                    td #{bridgeEvent.name}
