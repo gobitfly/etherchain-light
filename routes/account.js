@@ -16,6 +16,13 @@ router.get('/:account', function(req, res, next) {
   
   async.waterfall([
     function(callback) {
+      if (web3.isAddress(req.params.account)) {
+        callback();
+      } else {
+        callback(new Error("The input address is not a valid address!!!"))
+      }
+    },
+    function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
         callback(err, result);
       });
