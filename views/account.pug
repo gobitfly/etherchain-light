@@ -104,6 +104,9 @@ block content
           if !account.source
             a(href="/contract/verify") Upload source
           pre #{account.code}
+          if account.wast
+            h3 Wast code
+            pre #{account.wast}
           h3 Storage
           pre #{JSON.stringify(account.storage)}
       if account.source
