@@ -26,6 +26,7 @@
     "solc": "^0.4.9",
     "string-similarity": "^1.1.0",
     "tmp": "0.0.31",
+    "wabt": "^1.0.0",
     "web3": "git+https://github.com/ewasm/web3.js.git#ewasm",
     "yargs": "^7.0.1"
   }

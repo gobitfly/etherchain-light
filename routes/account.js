@@ -4,6 +4,26 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 
+var wabt = require('wabt');
+
+var EWASM_BYTES = '0x0061736d01';
+
+function hex2buf (hex) {
+  let typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
+    return parseInt(h, 16);
+  }));
+  return typedArray;
+}
+
+function wasm2wast(wasmBytecode) {
+  let wasmBuf = hex2buf(wasmBytecode);
+  let textmodule = wabt.readWasm(wasmBuf, {readDebugNames: true});
+  textmodule.generateNames();
+  textmodule.applyNames();
+  let wasmAsWast = textmodule.toText({foldExprs: true, inlineExport: true});
+  return wasmAsWast;
+}
+
 router.get('/:account', function(req, res, next) {
   
   var config = req.app.get('config');  
@@ -37,8 +57,16 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(code, callback) {
       data.code = code;
+      data.wast = "";
       if (code !== "0x") {
         data.isContract = true;
+
+        // do code to wast conversion here
+        if (code.substring(0,12) === EWASM_BYTES) {
+          var wast = wasm2wast(code.substr(2));
+          data.wast = wast;
+        }
+
         web3.debug.storageRangeAt(data.lastBlock.toString(), 0, req.params.account, "0x0", 1000, function(err, result) {
           callback(err, result.storage);
         })
