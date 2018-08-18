@@ -14,8 +14,10 @@ router.get('/pending', function(req, res, next) {
   
   async.waterfall([
     function(callback) {
-      web3.parity.pendingTransactions(function(err, result) {
-        callback(err, result);
+      var txs = [];
+      web3.eth.getBlock('pending', true, function(err, block) {
+        txs = block.transactions;
+        callback(err, txs);
       });
     }
   ], function(err, txs) {
@@ -79,12 +81,8 @@ router.get('/:tx', function(req, res, next) {
         callback(err, result, receipt);
       });
     }, function(tx, receipt, callback) {  
-      web3.trace.transaction(tx.hash, function(err, traces) {
-        callback(err, tx, receipt, traces);
-      });
-    }, function(tx, receipt, traces, callback) {
       db.get(tx.to, function(err, value) {
-        callback(null, tx, receipt, traces, value);
+        callback(null, tx, receipt, null, value);
       });
     }
   ], function(err, tx, receipt, traces, source) {
@@ -106,7 +104,10 @@ router.get('/:tx', function(req, res, next) {
     }
     tx.traces = [];
     tx.failed = false;
-    tx.gasUsed = 0;
+    tx.gasUsed = receipt.gasUsed;
+    if (!tx.to) {
+      tx.contractAddress = receipt.contractAddress;
+    }
     if (traces != null) {
     traces.forEach(function(trace) {
         tx.traces.push(trace);

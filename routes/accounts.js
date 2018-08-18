@@ -11,9 +11,21 @@ router.get('/:offset?', function(req, res, next) {
   
   async.waterfall([
     function(callback) {
-      web3.parity.listAccounts(20, req.params.offset, function(err, result) {
-        callback(err, result);
-      });
+      web3.eth.getBlock('latest', function(err, result) {
+        if (err) {
+          callback(err, null)
+          return
+        }
+
+        let offset = req.params.offset ? req.params.offset : '0000000000000000000000000000000000000000';
+        console.log(offset);
+
+        // accountRangeAt params: block hash or number, tx index, start address hash, max results
+        web3.debug.accountRangeAt(result.hash, 0, offset, 20, function(err, result) {
+          result = Object.values(result.addressMap);
+          callback(err, result);
+        });
+      })
     }, function(accounts, callback) {
       
       var data = {};
