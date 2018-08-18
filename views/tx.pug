@@ -25,7 +25,9 @@ block content
         if tx.to
           a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
         else
-          | New Contract
+          | New Contract (deployment address:
+          a(href="/account/" + tx.contractAddress) #{nameformatter.format(tx.contractAddress)}
+          | )
     tr
       td Amount:
       td #{ethformatter(tx.value)}
