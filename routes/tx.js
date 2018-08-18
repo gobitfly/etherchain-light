@@ -16,6 +16,9 @@ router.get('/pending', function(req, res, next) {
     function(callback) {
       var txs = [];
       web3.eth.getBlock('pending', true, function(err, block) {
+        if (err) {
+          return callback(err);
+        }
         txs = block.transactions;
         callback(err, txs);
       });
