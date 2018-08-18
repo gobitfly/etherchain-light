@@ -15,11 +15,17 @@ var nodeStatus = function(config) {
     async.waterfall([
       function(callback) {
         web3.version.getNode(function(err, result) {
+          if (err) {
+            return callback(err);
+          }
           self.version = result;
           callback(err);
         });
       }, function(callback) {
         web3.net.getPeerCount(function(err, result) {
+          if (err) {
+            return callback(err);
+          }
           self.nbrPeers = result;
           callback(err);
         });
