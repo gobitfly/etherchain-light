@@ -2,7 +2,7 @@ extends layout
 
 block content
   h3 Pending Transactions
-  
+
   if txs.length === 0
     p Currently there are no pending transactions
   else
@@ -18,12 +18,12 @@ block content
         for tx in txs
           tr
             td
-              a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
+              a(href="/explorer/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
             td
-              a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+              a(href="/explorer/account/" + tx.from) #{nameformatter.format(tx.from)}
             td
               if tx.to
-                a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+                a(href="/explorer/account/" + tx.to) #{nameformatter.format(tx.to)}
               else
                 | New Contract
             td #{ethformatter(tx.value)}
