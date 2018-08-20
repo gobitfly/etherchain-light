@@ -22,6 +22,10 @@ router.get('/:offset?', function(req, res, next) {
 
         // accountRangeAt params: block hash or number, tx index, start address hash, max results
         web3.debug.accountRangeAt(result.hash, 0, offset, 20, function(err, result) {
+          if (err) {
+            callback(err, null)
+            return
+          }
           result = Object.values(result.addressMap);
           callback(err, result);
         });
