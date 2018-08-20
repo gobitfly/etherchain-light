@@ -70,3 +70,11 @@ docker run -p "3000:3000" \
 ```bash
 docker-compose up
 ```
+
+### Notes
+
+`etherchain` depends on a number of RPC namespaces. It should have access to `web3`, `net`, `eth`, `debug` and `trace`.
+
+For best results it also needs the `debug_accountRangeAt` and `debug_storageRangeAt` feature.
+
+From `trace` it needs `trace_block`, `trace_filter` and `trace_replayTransaction`.
