@@ -41,10 +41,11 @@ html(lang="en")
               ul.dropdown-menu
                 li
                   a(href='/explorer/tx/submit') Submit Tx
-                li
-                  a(href='/explorer/contract/verify') Verify Contract
-                li
-                  a(href='/explorer/signature/verify') Verify Signature
+                // hide verify links
+                // li
+                //   a(href='/explorer/contract/verify') Verify Contract
+                // li
+                //   a(href='/explorer/signature/verify') Verify Signature
 
           form.navbar-form.navbar-right(action="/explorer/search", method="POST")
             .form-group
