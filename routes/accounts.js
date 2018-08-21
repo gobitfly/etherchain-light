@@ -23,7 +23,7 @@ router.get('/:offset?', function(req, res, next) {
         console.log(offset);
 
         // accountRangeAt params: block number or "latest", tx index, start address hash, max results
-        web3.debug.accountRangeAt(result.number, 0, offset, 20, function(err, result) {
+        web3.debug.accountRangeAt('0x' + result.number.toString(16), 0, offset, 20, function(err, result) {
           if (err) {
             callback(err, null)
             return
