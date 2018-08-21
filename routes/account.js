@@ -68,7 +68,11 @@ router.get('/:account', function(req, res, next) {
         }
 
         web3.debug.storageRangeAt(data.lastBlock.toString(), 0, req.params.account, "0x0", 1000, function(err, result) {
-          callback(err, result.storage);
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, result.storage);
+          }
         })
       } else {
         callback(null, null);
