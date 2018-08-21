@@ -6,7 +6,7 @@ var nodeStatus = function(config) {
   this.conf = config;
   
   this.nbrPeers = -1;
-  this.version = "";
+  this.version = "unknown";
   
   this.updateStatus = function() {
     var web3 = new Web3();
