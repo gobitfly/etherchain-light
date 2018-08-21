@@ -67,7 +67,7 @@ router.get('/:account', function(req, res, next) {
           data.wast = wast;
         }
 
-        web3.debug.storageRangeAt(data.lastBlock.toString(), 0, req.params.account, "0x0", 1000, function(err, result) {
+        web3.debug.storageRangeAt(data.lastBlock.toString(), 0, req.params.account, '0x00', 1000, function(err, result) {
           if (err) {
             callback(err);
           } else {
