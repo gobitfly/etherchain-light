@@ -20,8 +20,8 @@ router.get('/:offset?', function(req, res, next) {
         let offset = req.params.offset ? req.params.offset : '0000000000000000000000000000000000000000';
         console.log(offset);
 
-        // accountRangeAt params: block hash or number, tx index, start address hash, max results
-        web3.debug.accountRangeAt(result.hash, 0, offset, 20, function(err, result) {
+        // accountRangeAt params: block number or "latest", tx index, start address hash, max results
+        web3.debug.accountRangeAt(result.number, 0, offset, 20, function(err, result) {
           if (err) {
             callback(err, null)
             return
