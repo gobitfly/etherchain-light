@@ -4,6 +4,26 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 
+var wabt = require('wabt');
+
+var EWASM_BYTES = '0x0061736d01';
+
+function hex2buf (hex) {
+  let typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
+    return parseInt(h, 16);
+  }));
+  return typedArray;
+}
+
+function wasm2wast(wasmBytecode) {
+  let wasmBuf = hex2buf(wasmBytecode);
+  let textmodule = wabt.readWasm(wasmBuf, {readDebugNames: true});
+  textmodule.generateNames();
+  textmodule.applyNames();
+  let wasmAsWast = textmodule.toText({foldExprs: true, inlineExport: true});
+  return wasmAsWast;
+}
+
 router.get('/:account', function(req, res, next) {
   
   var config = req.app.get('config');  
@@ -21,6 +41,7 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(lastBlock, callback) {
       data.lastBlock = lastBlock.number;
+      data.lastBlockHash = lastBlock.hash;
       //limits the from block to -1000 blocks ago if block count is greater than 1000
       if (data.lastBlock > 0x3E8) {
         data.fromBlock = data.lastBlock - 0x3e8;
@@ -37,10 +58,33 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(code, callback) {
       data.code = code;
+      data.wast = "";
       if (code !== "0x") {
         data.isContract = true;
+
+        // do code to wast conversion here
+        if (code.substring(0,12) === EWASM_BYTES) {
+          var wast = wasm2wast(code.substr(2));
+          data.wast = wast;
+        }
+
+        web3.debug.storageRangeAt(data.lastBlockHash, 0, req.params.account, '0x00', 1000, function(err, result) {
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, result.storage);
+          }
+        })
+      } else {
+        callback(null, null);
       }
-      
+   }, function(storage, callback) {
+      if (storage) {
+        var listOfStorageKeyVals = Object.values(storage);
+        data.storage = listOfStorageKeyVals;
+      }
+
+      // fetch verified contract source from db      
       db.get(req.params.account.toLowerCase(), function(err, value) {
         callback(null, value);
       });
@@ -81,14 +125,22 @@ router.get('/:account', function(req, res, next) {
       
       
     }, function(callback) {
+      /*
       web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "fromAddress": [ req.params.account ] }, function(err, traces) {
         callback(err, traces);
       });
+      */
+
+      callback(null, [])
     }, function(tracesSent, callback) {
       data.tracesSent = tracesSent;
+      /*
       web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "toAddress": [ req.params.account ] }, function(err, traces) {
         callback(err, traces);
       });
+      */
+      
+      callback(null, [])
     }
   ], function(err, tracesReceived) {
     if (err) {

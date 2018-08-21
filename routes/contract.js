@@ -7,7 +7,8 @@ var tmp = require('tmp');
 var fs = require('fs');
 var Web3 = require('web3');
 
-var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
+//var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
+var versions = {};
 
 router.get('/verify', function(req, res, next) {  
   res.render('verifyContract', { versions: versions });
