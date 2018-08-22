@@ -41,6 +41,7 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(lastBlock, callback) {
       data.lastBlock = lastBlock.number;
+      data.lastBlockHash = lastBlock.hash;
       //limits the from block to -1000 blocks ago if block count is greater than 1000
       if (data.lastBlock > 0x3E8) {
         data.fromBlock = data.lastBlock - 0x3e8;
@@ -67,7 +68,7 @@ router.get('/:account', function(req, res, next) {
           data.wast = wast;
         }
 
-        web3.debug.storageRangeAt(data.lastBlock.toString(), 0, req.params.account, "0x0", 1000, function(err, result) {
+        web3.debug.storageRangeAt(data.lastBlockHash, 0, req.params.account, '0x00', 1000, function(err, result) {
           if (err) {
             callback(err);
           } else {
