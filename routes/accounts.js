@@ -3,6 +3,7 @@ var router = express.Router();
 
 var async = require('async');
 var Web3 = require('web3');
+var util = require('ethereumjs-util');
 
 router.get('/:offset?', function(req, res, next) {
   var config = req.app.get('config');  
@@ -17,11 +18,12 @@ router.get('/:offset?', function(req, res, next) {
           return
         }
 
-        let offset = req.params.offset ? req.params.offset : '0000000000000000000000000000000000000000';
+        let offset = req.params.offset ? req.params.offset : Buffer.alloc(32)
+        offset = '0x' + util.keccak256(offset).toString('hex')
         console.log(offset);
 
-        // accountRangeAt params: block hash or number, tx index, start address hash, max results
-        web3.debug.accountRangeAt(result.hash, 0, offset, 20, function(err, result) {
+        // accountRangeAt params: block number or "latest", tx index, start address hash, max results
+        web3.debug.accountRangeAt('0x' + result.number.toString(16), 0, offset, 20, function(err, result) {
           if (err) {
             callback(err, null)
             return
