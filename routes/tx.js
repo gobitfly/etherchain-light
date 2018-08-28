@@ -6,6 +6,7 @@ var Web3 = require('web3');
 var web3extended = require('web3-extended');
 var abi = require('ethereumjs-abi');
 var abiDecoder = require('abi-decoder');
+var txn = null;
 
 router.get('/pending', function(req, res, next) {
 
@@ -39,20 +40,38 @@ router.get('/submit', function(req, res, next) {
   res.render('tx_submit', { });
 });
 
-router.post('/submit', function(req, res, next) {
-  if (!req.body.txHex) {
-    return res.render('tx_submit', { message: "No transaction data specified"});
-  }
 
+router.post('/submit', function(req, res, next) {
+  
   var config = req.app.get('config');
   var web3 = new Web3();
-  web3.setProvider(config.provider);
+
+  txn = {};
+
+  if (req.body.txHex.length > 0)
+    txn.data = req.body.txHex;
+
+  if (req.body.destAddress)
+    txn.to = req.body.destAddress;
+
+  if (req.body.value) {
+    let value = parseInt(req.body.value);
+    if (!value) {
+      alert("must input number as value");
+      throw("valueError");
+    }
+    txn.value = req.body.value;
+  }
 
   async.waterfall([
     function(callback) {
-      web3.eth.sendRawTransaction(req.body.txHex, function(err, result) {
-        callback(err, result);
+
+      // metamask is called on the front end
+      res.render('tx_submit', {
+        message: 'Submitting transaction...',
+        txn: txn
       });
+
     }
   ], function(err, hash) {
     if (err) {

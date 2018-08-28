@@ -11,12 +11,12 @@ html(lang="en")
     meta(name='keywords', content='ethereum, explorer, blockchain, etherchain, cryptocurrency, cryptocurrencies, bitcoin')
 
     title ewasm testnet
-
     link(href=config.bootstrapUrl, rel="stylesheet", crossorigin="anonymous")    
     link(rel='stylesheet', href='/explorer/stylesheets/style.css')
     script(src='/explorer/js/libwabt.js')
     script(src='/explorer/js/compile2wast.js')
-    
+  script.
+    metamask = window.web3
   body
     nav.navbar.navbar-inverse.navbar-fixed-top
       .container
