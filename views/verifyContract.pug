@@ -2,7 +2,7 @@ extends layout
 
 block content
   h3 Verify contract source
-  form(action="/contract/verify", method="post")
+  form(action="/explorer/contract/verify", method="post")
     .form-group
       label(for="contractAddress") Contract address
       input.form-control#contractAddress(type="text", placeholder="0x...", name="contractAddress")

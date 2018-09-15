@@ -50,8 +50,9 @@ app.use('/block', block);
 app.use('/tx', tx);
 app.use('/account', account);
 app.use('/accounts', accounts);
-app.use('/contract', contract);
-app.use('/signature', signature);
+// disable verify contract and verify signature...
+// app.use('/contract', contract);
+// app.use('/signature', signature);
 app.use('/search', search);
 
 // catch 404 and forward to error handler

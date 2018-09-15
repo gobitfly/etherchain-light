@@ -10,7 +10,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-RUN cp config.js.example config.js
+# config file already renamed to config.js
+# RUN cp config.js.example config.js
 
 EXPOSE 3000
 

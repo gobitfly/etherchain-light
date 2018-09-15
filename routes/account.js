@@ -17,23 +17,29 @@ function hex2buf (hex) {
 
 function wasm2wast(wasmBytecode) {
   let wasmBuf = hex2buf(wasmBytecode);
-  let textmodule = wabt.readWasm(wasmBuf, {readDebugNames: true});
-  textmodule.generateNames();
-  textmodule.applyNames();
-  let wasmAsWast = textmodule.toText({foldExprs: true, inlineExport: true});
+  let wasmAsWast = '';
+  try {
+    let textmodule = wabt.readWasm(wasmBuf, {readDebugNames: true});
+    textmodule.generateNames();
+    textmodule.applyNames();
+    wasmAsWast = textmodule.toText({foldExprs: true, inlineExport: true});
+  } catch (err) {
+    wasmAsWast = "Error converting wasm to wast. error: " + err
+  }
+
   return wasmAsWast;
 }
 
 router.get('/:account', function(req, res, next) {
-  
-  var config = req.app.get('config');  
+
+  var config = req.app.get('config');
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  
+
   var db = req.app.get('db');
-  
+
   var data = {};
-  
+
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -84,23 +90,23 @@ router.get('/:account', function(req, res, next) {
         data.storage = listOfStorageKeyVals;
       }
 
-      // fetch verified contract source from db      
+      // fetch verified contract source from db
       db.get(req.params.account.toLowerCase(), function(err, value) {
         callback(null, value);
       });
     }, function(source, callback) {
-      
+
       if (source) {
         data.source = JSON.parse(source);
-        
+
         data.contractState = [];
         if (!data.source.abi) {
           return callback();
         }
         var abi = JSON.parse(data.source.abi);
         var contract = web3.eth.contract(abi).at(req.params.account);
-        
-        
+
+
         async.eachSeries(abi, function(item, eachCallback) {
           if (item.type === "function" && item.inputs.length === 0 && item.constant) {
             try {
@@ -118,12 +124,12 @@ router.get('/:account', function(req, res, next) {
         }, function(err) {
           callback(err);
         });
-        
+
       } else {
         callback();
       }
-      
-      
+
+
     }, function(callback) {
       /*
       web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "fromAddress": [ req.params.account ] }, function(err, traces) {
@@ -139,54 +145,54 @@ router.get('/:account', function(req, res, next) {
         callback(err, traces);
       });
       */
-      
+
       callback(null, [])
     }
   ], function(err, tracesReceived) {
     if (err) {
       return next(err);
     }
-    
+
     data.address = req.params.account;
     data.tracesReceived = tracesReceived;
-    
+
     var blocks = {};
     data.tracesSent.forEach(function(trace) {
       if (!blocks[trace.blockNumber]) {
         blocks[trace.blockNumber] = [];
       }
-      
+
       blocks[trace.blockNumber].push(trace);
     });
     data.tracesReceived.forEach(function(trace) {
       if (!blocks[trace.blockNumber]) {
         blocks[trace.blockNumber] = [];
       }
-      
+
       blocks[trace.blockNumber].push(trace);
     });
-    
+
     data.tracesSent = null;
     data.tracesReceived = null;
-    
+
     data.blocks = [];
     var txCounter = 0;
     for (var block in blocks) {
       data.blocks.push(blocks[block]);
       txCounter++;
     }
-    
+
     if (data.source) {
       data.name = data.source.name;
     } else if (config.names[data.address]) {
       data.name = config.names[data.address];
     }
-    
+
     data.blocks = data.blocks.reverse().splice(0, 100);
-    
+
     res.render('account', { account: data });
   });
-  
+
 });
 
 module.exports = router;
