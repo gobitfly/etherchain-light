@@ -14,7 +14,7 @@ var nodeStatus = function(config) {
     
     async.waterfall([
       function(callback) {
-        web3.version.getNode(function(err, result) {
+        web3.eth.getNodeInfo(function(err, result) {
           if (err) {
             return callback(err);
           }
@@ -22,7 +22,7 @@ var nodeStatus = function(config) {
           callback(err);
         });
       }, function(callback) {
-        web3.net.getPeerCount(function(err, result) {
+        web3.eth.net.getPeerCount(function(err, result) {
           if (err) {
             return callback(err);
           }

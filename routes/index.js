@@ -3,12 +3,13 @@ var router = express.Router();
 
 var async = require('async');
 var Web3 = require('web3');
-
+var web3extended = require('web3-extended');
 
 router.get('/', function(req, res, next) {
   
   var config = req.app.get('config');  
   var web3 = new Web3();
+  web3extended(web3);
   web3.setProvider(config.provider);
   
   async.waterfall([
