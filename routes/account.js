@@ -6,6 +6,7 @@ var Web3 = require('web3');
 var web3extended = require('web3-extended');
 
 var EWASM_BYTES = '0x0061736d01';
+var nodeVersion = '';
 
 
 router.get('/:account', function(req, res, next) {
@@ -19,7 +20,10 @@ router.get('/:account', function(req, res, next) {
 
   var data = {};
   var BLOCK_COUNT = 1000;
+  
+  nodeVersion = req.app.locals.nodeStatus.version;
 
+                                                  
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -111,10 +115,23 @@ router.get('/:account', function(req, res, next) {
       var blocks = [];
  
       var blockCount = BLOCK_COUNT;
+      var address = req.params.account;
+
+      if (nodeVersion.includes('aleth')) {
+        blockCount = 50; // aleth's jsonrpc script does not support looking into 1000 blocks
+        if(!address.includes('0x')) {
+          address = '0x' + address;
+        }
+        
+        if (data.lastBlock < blockCount) {
+          blockCount = data.lastBlock;
+        }
+      }
+
       var traces = [];
 
-      if (data.fromBlock - blockCount < 0) {
-        blockCount = data.fromBlock + 1;
+      if (data.lastBlock - blockCount < 0) {
+        blockCount = data.lastBlock + 1;
       }
 
       async.times(blockCount, function(n, next) {
@@ -128,7 +145,7 @@ router.get('/:account', function(req, res, next) {
 
         blocks.forEach(function(block) {
           block.transactions.forEach(function(e) {
-            if (req.params.account == e.from || req.params.account == e.to) {
+            if (address == e.from || address == e.to) {
               traces.push(e);
             }
           });
@@ -140,11 +157,16 @@ router.get('/:account', function(req, res, next) {
     if (err) {
       return next(err);
     }
-    
+
     var tracesSent = [];
     var tracesReceived = [];
 
     data.address = req.params.account;
+
+    // aleth doesn't includes 0x in address
+    if (!data.address.includes('0x')) {
+      data.address = '0x' + data.address;
+    }
 
     traces.forEach(function(trace) {
 
