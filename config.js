@@ -1,10 +1,10 @@
 var web3 = require('web3');
 var net = require('net');
 
-var config = function () {
+var config = function (endpoint) {
 
   this.logFormat = "combined";
-  this.provider = new web3.providers.HttpProvider("http://localhost:8545");
+  this.provider = new web3.providers.HttpProvider(endpoint);
 
   //this.bootstrapUrl = "https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css";
   this.bootstrapUrl = "https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css";
