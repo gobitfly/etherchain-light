@@ -13,12 +13,6 @@ template = parse_args.template
 endpoint = parse_args.rpc_endpoint
 
 try:
-  with open(privatekey) as f:
-    privatekey = f.read().replace('\n', '')
-except Exception as e:
-  print("error opening private key file: ", e)
-
-try:
   with open(template) as f:
     template = f.read().replace('{rpcEndpoint}', endpoint)
     print(template)
