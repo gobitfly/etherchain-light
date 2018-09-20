@@ -1,0 +1,83 @@
+extends layout
+block content
+  h3 ewasm testnet ether faucet
+  div.div.panel.panel-default
+    div.div.panel-heading
+      h4 Faucet
+    div.div.panel-body
+      p address: #{data.faucetAddress}
+      p balance: #{ethformatter(data.faucetBalance)}
+      form(action='/faucet' method='post')
+        .form-group
+          input.from-control#useraccount(type='hidden', name="useraccount")
+        |
+        button.btn.btn-success(type='submit') request 1 ether from faucet
+  div.div.panel.panel-default
+    div.div.panel-heading
+      h4 User
+    div.div.panel-body
+      p(id="user-address") address: 
+      p(id="user-balance") balance:
+      p donate to faucet:
+      button.btn.btn-warning(type='button' style="margin: 4px" onClick="sendTx(1)") 1 ether
+      button.btn.btn-warning(type='button' style="margin: 4px" onClick="sendTx(10)") 10 ether
+      button.btn.btn-warning(type='button' style="margin: 4px" onClick="sendTx(100)") 100 ether
+  div.div.panel.panel-default
+    div.div.panel-heading
+      h4 Transactions
+    div.div.panel-body
+      p#transaction
+        a(href="/explorer/tx/" + data.transaction) #{data.transaction}
+        p(style="color: red") #{data.errorMessage}
+  script.
+    var receipt = null;
+    function getAccount() {
+      var account = metamask.eth.accounts[0];
+      if (account) {
+        document.getElementById("user-address").innerHTML = 'address: ' + account;
+        document.getElementById("useraccount").value = account;
+        return account;
+      }
+      return null;
+    }
+    function getBalance() {
+      var account = metamask.eth.accounts[0];
+      if (account) {
+         web3.eth.getBalance(account, function(err, balance) {
+           document.getElementById("user-balance").innerHTML = 'balance: ' + metamask.fromWei(balance);
+         });
+      }
+    }
+    function getEther() {
+       var account = getAccount();
+       if (!account) return alert('no user accounts found!');
+    }
+    function sendTx(value) {
+      const ETHER = 1e18;
+      var transaction = {
+        to: !{JSON.stringify(data.faucetAddress)},
+        data: '',
+        value: value * ETHER
+      }
+      metamask.eth.sendTransaction(transaction, function(e, tx) {
+        if (!e) {
+          console.log('Transaction: ', JSON.stringify(tx));
+          receipt = tx;
+          document.getElementById("transaction").innerHTML = '<a href="/explorer/tx/' + tx + '">' + tx + '</a>';
+        } else {
+          console.log('Error: ', e);
+          document.getElementById("transaction").innerHTML = e;
+        }
+      })
+    }
+    function showTransactionDiv() {
+      var tx  = !{JSON.stringify(data.transaction)};
+      var err = !{JSON.stringify(data.errorMessage)};
+      if (tx || err) {
+        window.location.hash = "#transaction";
+      }
+    }
+    showTransactionDiv();
+    getAccount();
+    getBalance();
+  
