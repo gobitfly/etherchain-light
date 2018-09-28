@@ -6,7 +6,7 @@ var nodeStatus = function(config) {
   this.conf = config;
   
   this.nbrPeers = -1;
-  this.version = "";
+  this.version = "unknown";
   
   this.updateStatus = function() {
     var web3 = new Web3();
@@ -14,12 +14,18 @@ var nodeStatus = function(config) {
     
     async.waterfall([
       function(callback) {
-        web3.version.getNode(function(err, result) {
+        web3.eth.getNodeInfo(function(err, result) {
+          if (err) {
+            return callback(err);
+          }
           self.version = result;
           callback(err);
         });
       }, function(callback) {
-        web3.net.getPeerCount(function(err, result) {
+        web3.eth.net.getPeerCount(function(err, result) {
+          if (err) {
+            return callback(err);
+          }
           self.nbrPeers = result;
           callback(err);
         });

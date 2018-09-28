@@ -26,7 +26,9 @@
     "solc": "^0.4.9",
     "string-similarity": "^1.1.0",
     "tmp": "0.0.31",
-    "web3": "git+https://github.com/gobitfly/web3.js.git#develop",
+    "wabt": "^1.0.0",
+    "web3": "1.0.0-beta.35",
+    "web3-extended": "git+https://github.com/axic/web3-extended.js.git",
     "yargs": "^7.0.1"
   }
 }
