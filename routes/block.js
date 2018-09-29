@@ -6,12 +6,12 @@ var Web3 = require('web3');
 var web3extended = require('web3-extended');
 
 router.get('/:block', function(req, res, next) {
-  
-  var config = req.app.get('config');  
+
+  var config = req.app.get('config');
   var web3 = new Web3();
   web3extended(web3);
   web3.setProvider(config.provider);
-  
+
   async.waterfall([
     function(callback) {
       web3.eth.getBlock(req.params.block, true, function(err, result) {
@@ -21,7 +21,7 @@ router.get('/:block', function(req, res, next) {
       if (!result) {
         return next({name : "BlockNotFoundError", message : "Block not found!"});
       }
-      
+
       // disable tracing for cpp-eth / non-parity clients
       /*
       web3.trace.block(result.number, function(err, traces) {
@@ -34,7 +34,7 @@ router.get('/:block', function(req, res, next) {
     if (err) {
       return next(err);
     }
-    
+
     block.transactions.forEach(function(tx) {
       tx.traces = [];
       tx.failed = false;
@@ -51,17 +51,20 @@ router.get('/:block', function(req, res, next) {
       }
       // console.log(tx);
     });
+
+    block.author = block.author || block.miner;
+
     res.render('block', { block: block });
   });
-  
+
 });
 
 router.get('/uncle/:hash/:number', function(req, res, next) {
-  
-  var config = req.app.get('config');  
+
+  var config = req.app.get('config');
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  
+
   async.waterfall([
     function(callback) {
       web3.eth.getUncle(req.params.hash, req.params.number, true, function(err, result) {
@@ -78,12 +81,12 @@ router.get('/uncle/:hash/:number', function(req, res, next) {
     if (err) {
       return next(err);
     }
-     
+
     console.log(uncle);
-    
+
     res.render('uncle', { uncle: uncle, blockHash: req.params.hash });
   });
-  
+
 });
 
 module.exports = router;
