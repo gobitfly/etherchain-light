@@ -106,7 +106,7 @@ block content
           pre #{account.code}
           if account.wast
             h3 Wast code
-            pre #{account.wast}
+            pre(class="wast") #{account.wast}
           h3 Storage
           pre #{JSON.stringify(account.storage)}
       if account.source
@@ -129,3 +129,7 @@ block content
                 tr
                   td #{item.name}
                   td #{item.result}
+  if account.wast
+    script.
+      var wasm = !{JSON.stringify(account.code)}
+      wasm2wast(wasm)

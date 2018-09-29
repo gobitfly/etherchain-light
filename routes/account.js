@@ -5,31 +5,8 @@ var async = require('async');
 var Web3 = require('web3');
 var web3extended = require('web3-extended');
 
-var wabt = require('wabt');
-
 var EWASM_BYTES = '0x0061736d01';
 
-function hex2buf (hex) {
-  let typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
-    return parseInt(h, 16);
-  }));
-  return typedArray;
-}
-
-function wasm2wast(wasmBytecode) {
-  let wasmBuf = hex2buf(wasmBytecode);
-  let wasmAsWast = '';
-  try {
-    let textmodule = wabt.readWasm(wasmBuf, {readDebugNames: true});
-    textmodule.generateNames();
-    textmodule.applyNames();
-    wasmAsWast = textmodule.toText({foldExprs: true, inlineExport: true});
-  } catch (err) {
-    wasmAsWast = "Error converting wasm to wast. error: " + err
-  }
-
-  return wasmAsWast;
-}
 
 router.get('/:account', function(req, res, next) {
 
@@ -66,14 +43,12 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(code, callback) {
       data.code = code;
-      data.wast = "";
+      data.wast = false;
       if (code !== "0x") {
         data.isContract = true;
 
-        // do code to wast conversion here
         if (code.substring(0,12) === EWASM_BYTES) {
-          var wast = wasm2wast(code.substr(2));
-          data.wast = wast;
+          data.wast = true;
         }
 
         web3.debug.storageRangeAt(data.lastBlockHash, 0, req.params.account, '0x00', 1000, function(err, result) {
@@ -191,7 +166,6 @@ router.get('/:account', function(req, res, next) {
     }
 
     data.blocks = data.blocks.reverse().splice(0, 100);
-
     res.render('account', { account: data });
   });
 
