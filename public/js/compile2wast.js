@@ -5,6 +5,8 @@ function hex2buf (hex) {
   return typedArray;
 }
 
+// note that the readWasm function is broken on wabt.js 1.0.5.
+// use wabt.js 1.0.0
 function wasm2wast(wasm) {
   var wasmBuf = hex2buf(wasm)
   var pre = document.querySelector('.wast')
