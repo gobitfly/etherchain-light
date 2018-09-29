@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "start", "--", "--rpc=http://40.114.204.83:8545" ]
