@@ -6,6 +6,7 @@ var Web3 = require('web3');
 var web3extended = require('web3-extended');
 
 var EWASM_BYTES = '0x0061736d01';
+var nodeVersion = '';
 
 
 router.get('/:account', function(req, res, next) {
@@ -18,7 +19,11 @@ router.get('/:account', function(req, res, next) {
   var db = req.app.get('db');
 
   var data = {};
+  var BLOCK_COUNT = 1000;
+  
+  nodeVersion = req.app.locals.nodeStatus.version;
 
+                                                  
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -28,8 +33,8 @@ router.get('/:account', function(req, res, next) {
       data.lastBlock = lastBlock.number;
       data.lastBlockHash = lastBlock.hash;
       //limits the from block to -1000 blocks ago if block count is greater than 1000
-      if (data.lastBlock > 0x3E8) {
-        data.fromBlock = data.lastBlock - 0x3e8;
+      if (data.lastBlock > BLOCK_COUNT) {
+        data.fromBlock = data.lastBlock - BLOCK_COUNT;
       } else {
         data.fromBlock = 0x00;
       }
@@ -105,32 +110,76 @@ router.get('/:account', function(req, res, next) {
       } else {
         callback();
       }
-
-
+      
     }, function(callback) {
-      /*
-      web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "fromAddress": [ req.params.account ] }, function(err, traces) {
-        callback(err, traces);
-      });
-      */
+      var blocks = [];
+ 
+      var blockCount = BLOCK_COUNT;
+      var address = req.params.account.toLowerCase();
 
-      callback(null, [])
-    }, function(tracesSent, callback) {
-      data.tracesSent = tracesSent;
-      /*
-      web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "toAddress": [ req.params.account ] }, function(err, traces) {
-        callback(err, traces);
-      });
-      */
+      if (nodeVersion.includes('aleth')) {
+        blockCount = 50; // aleth's jsonrpc script does not support looking into 1000 blocks
+        if(!address.includes('0x')) {
+          address = '0x' + address;
+        }
+        
+        if (data.lastBlock < blockCount) {
+          blockCount = data.lastBlock;
+        }
+      }
 
-      callback(null, [])
+      var traces = [];
+
+      if (data.lastBlock - blockCount < 0) {
+        blockCount = data.lastBlock + 1;
+      }
+
+      async.times(blockCount, function(n, next) {
+        web3.eth.getBlock(data.lastBlock - n, true, function(err, block) {
+          next(err, block);
+        });
+      }, function(err, blocks) {
+        if (err) {
+          return next(err);
+        }
+
+        blocks.forEach(function(block) {
+          block.transactions.forEach(function(e) {
+            e.from = e.from.toLowerCase();
+            e.to = e.to.toLowerCase();
+            if (address == e.from || address == e.to) {
+              traces.push(e);
+            }
+          });
+        });
+        callback(null, traces);
+      });
     }
-  ], function(err, tracesReceived) {
+  ], function(err, traces) {
     if (err) {
       return next(err);
     }
 
-    data.address = req.params.account;
+    var tracesSent = [];
+    var tracesReceived = [];
+
+    data.address = req.params.account.toLowerCase();
+
+    // aleth doesn't includes 0x in address
+    if (!data.address.includes('0x')) {
+      data.address = '0x' + data.address;
+    }
+
+    traces.forEach(function(trace) {
+
+      if (trace.from == data.address) {
+        tracesSent.push(trace);
+      } else {
+        tracesReceived.push(trace);
+      }
+    });
+    
+    data.tracesSent = tracesSent;
     data.tracesReceived = tracesReceived;
 
     var blocks = {};
