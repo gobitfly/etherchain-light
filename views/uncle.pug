@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  
+
   .row
     .col-md-12.text-center
       h3 Uncle #{uncle.number}
@@ -11,13 +11,13 @@ block content
       td Hash:
       td #{uncle.hash}
     tr
-      td Block hash: 
-      td 
-        a(href="/block/" + blockHash) #{blockHash}
+      td Block hash:
+      td
+        a(href="/explorer/block/" + blockHash) #{blockHash}
     tr
-      td Miner: 
-      td  
-        a(href="/account/" + uncle.author) #{nameformatter.format(uncle.author)}
+      td Miner:
+      td
+        a(href="/explorer/account/" + uncle.author) #{nameformatter.format(uncle.author)}
     tr
       td Gas Limit:
       td #{numeral(uncle.gasLimit).format()}

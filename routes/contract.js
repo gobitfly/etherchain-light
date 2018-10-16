@@ -6,8 +6,10 @@ var exec = require('child_process').exec;
 var tmp = require('tmp');
 var fs = require('fs');
 var Web3 = require('web3');
+var web3extended = require('web3-extended');
 
-var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
+//var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
+var versions = {};
 
 router.get('/verify', function(req, res, next) {  
   res.render('verifyContract', { versions: versions });
@@ -17,6 +19,7 @@ router.post('/verify', function(req, res, next) {
 
   var config = req.app.get('config');  
   var web3 = new Web3();
+  web3extended(web3);
   web3.setProvider(config.provider);
   
   var contractAddress = req.body.contractAddress.toLowerCase();

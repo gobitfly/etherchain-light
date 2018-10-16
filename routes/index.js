@@ -3,14 +3,15 @@ var router = express.Router();
 
 var async = require('async');
 var Web3 = require('web3');
-
+var web3extended = require('web3-extended');
 
 router.get('/', function(req, res, next) {
-  
-  var config = req.app.get('config');  
+
+  var config = req.app.get('config');
   var web3 = new Web3();
+  web3extended(web3);
   web3.setProvider(config.provider);
-  
+
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -18,13 +19,13 @@ router.get('/', function(req, res, next) {
       });
     }, function(lastBlock, callback) {
       var blocks = [];
-      
+
       var blockCount = 10;
-      
+
       if (lastBlock.number - blockCount < 0) {
         blockCount = lastBlock.number + 1;
       }
-      
+
       async.times(blockCount, function(n, next) {
         web3.eth.getBlock(lastBlock.number - n, true, function(err, block) {
           next(err, block);
@@ -37,9 +38,11 @@ router.get('/', function(req, res, next) {
     if (err) {
       return next(err);
     }
-    
+
     var txs = [];
     blocks.forEach(function(block) {
+      block.author = block.author || block.miner;
+
       block.transactions.forEach(function(tx) {
         if (txs.length === 10) {
           return;
@@ -49,7 +52,7 @@ router.get('/', function(req, res, next) {
     });
     res.render('index', { blocks: blocks, txs: txs });
   });
-  
+
 });
 
 module.exports = router;

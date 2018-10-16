@@ -4,28 +4,30 @@ block content
   h3 Transaction #{tx.hash}
   table.table
     tr
-      td Hash: 
+      td Hash:
       td
-        a(href="/tx/" + tx.hash) #{tx.hash}
+        a(href="/explorer/tx/" + tx.hash) #{tx.hash}
     tr
-      td Block hash: 
+      td Block hash:
       td
-        a(href="/block/" + tx.blockHash) #{tx.blockHash}
+        a(href="/explorer/block/" + tx.blockHash) #{tx.blockHash}
     tr
-      td Block number: 
+      td Block number:
       td
-        a(href="/block/" + tx.blockNumber) #{tx.blockNumber}
+        a(href="/explorer/block/" + tx.blockNumber) #{tx.blockNumber}
     tr
       td From:
       td
-        a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+        a(href="/explorer/account/" + tx.from) #{nameformatter.format(tx.from)}
     tr
       td To:
       td
         if tx.to
-          a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+          a(href="/explorer/account/" + tx.to) #{nameformatter.format(tx.to)}
         else
-          | New Contract
+          | New Contract (deployment address:
+          a(href="/explorer/account/" + tx.contractAddress) #{nameformatter.format(tx.contractAddress)}
+          | )
     tr
       td Amount:
       td #{ethformatter(tx.value)}
@@ -39,7 +41,7 @@ block content
       td Gas Used:
       td #{tx.gasUsed}
     tr
-      td Gas Price: 
+      td Gas Price:
       td #{ethformatter(tx.gasPrice)}
     tr
       td Fee:
@@ -67,7 +69,7 @@ block content
                       pre 0x#{pa.value.toString("hex")}
                   else if pa.type === "uint256" && pa.value
                     td.parameter-cell #{pa.value.toString(10)}
-                  else                    
+                  else
                     td.parameter-cell #{JSON.stringify(pa.value, null, 2)}
     if tx.logs
       tr
@@ -101,8 +103,8 @@ block content
       td Data:
       td
         pre #{tx.input}
-    
-  a(href="/tx/raw/" + tx.hash) Raw Trace
+
+  a(href="/explorer/tx/raw/" + tx.hash) Raw Trace
   h4 Internal Transactions
   table.table
     thead
@@ -118,26 +120,26 @@ block content
           td.text-right
             if trace.error
               span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
-              |  
+              |
           td.capitalize #{trace.type}
           if trace.type === "call"
             td
-              a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
-            td 
-              a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+              a(href="/explorer/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+            td
+              a(href="/explorer/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
             td #{ethformatter(trace.action.value)}
           else if trace.type === "create"
             td
-              a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+              a(href="/explorer/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
             td
               if trace.result
-                a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+                a(href="/explorer/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
               else
                 div #{'-'}
             td #{ethformatter(trace.action.value)}
           else if trace.type === "suicide"
             td
-              a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+              a(href="/explorer/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
             td
-              a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+              a(href="/explorer/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
             td #{ethformatter(trace.action.balance)}
