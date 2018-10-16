@@ -11,11 +11,11 @@ router.post('/', function(req, res, next) {
 		return next({ message: "Error: Invalid search string!" });
 	} else if (searchString.length < 22) {
 		// Most likely a block number, forward to block id handler
-		res.redirect('/block/' + searchString);
+		res.redirect('/explorer/block/' + searchString);
 	} else if (searchString.length == 66) {
-		res.redirect('/tx/' + searchString);
+		res.redirect('/explorer/tx/' + searchString);
 	} else if (searchString.length == 42) {
-		res.redirect('/account/' + searchString);
+		res.redirect('/explorer/account/' + searchString);
 	} else {
     return next({ message: "Error: Invalid search string!" });
   }
