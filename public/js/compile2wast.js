@@ -10,9 +10,9 @@ function hex2buf (hex) {
 function wasm2wast(wasm) {
   var wasmBuf = hex2buf(wasm)
   var pre = document.querySelector('.wast')
-  WabtModule().then(function(wabt) {
-    try {
-      var module = wabt.readWasm(wasmBuf, {readDebugNames: true})
+
+  try {
+      var module = this.wabt.readWasm(wasmBuf, {readDebugNames: true})
       module.generateNames()
       module.applyNames()
       var result = module.toText({foldExprs: true, inlineExport: true})
@@ -22,6 +22,4 @@ function wasm2wast(wasm) {
     } finally {
       if (module) module.destroy()
     }
-
-  })
 }
