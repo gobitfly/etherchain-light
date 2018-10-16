@@ -115,7 +115,7 @@ router.get('/:account', function(req, res, next) {
       var blocks = [];
  
       var blockCount = BLOCK_COUNT;
-      var address = req.params.account;
+      var address = req.params.account.toLowerCase();
 
       if (nodeVersion.includes('aleth')) {
         blockCount = 50; // aleth's jsonrpc script does not support looking into 1000 blocks
@@ -145,6 +145,8 @@ router.get('/:account', function(req, res, next) {
 
         blocks.forEach(function(block) {
           block.transactions.forEach(function(e) {
+            e.from = e.from.toLowerCase();
+            e.to = e.to.toLowerCase();
             if (address == e.from || address == e.to) {
               traces.push(e);
             }
@@ -161,7 +163,7 @@ router.get('/:account', function(req, res, next) {
     var tracesSent = [];
     var tracesReceived = [];
 
-    data.address = req.params.account;
+    data.address = req.params.account.toLowerCase();
 
     // aleth doesn't includes 0x in address
     if (!data.address.includes('0x')) {

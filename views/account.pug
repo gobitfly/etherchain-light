@@ -57,7 +57,7 @@ block content
                 else if trace.type !== "reward"
                   tr
                     td
-                      a(href="/explorer/tx/" + trace.transactionHash)  #{trace.transactionHash.substr(0, 10)}...
+                      a(href="/explorer/tx/" + trace.hash)  #{trace.hash.substr(0, 10)}...
                     td
                       a(href="/explorer/block/" + trace.blockNumber) #{trace.blockNumber}
                     td.capitalize
