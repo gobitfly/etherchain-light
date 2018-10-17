@@ -145,6 +145,9 @@ router.get('/:account', function(req, res, next) {
 
         blocks.forEach(function(block) {
           block.transactions.forEach(function(e) {
+            if (!e.to) {
+              e.to = '';
+            }
             e.from = e.from.toLowerCase();
             e.to = e.to.toLowerCase();
             if (address == e.from || address == e.to) {
