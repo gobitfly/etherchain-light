@@ -97,7 +97,7 @@ block content
             h3 Wast code
             pre(class="wast") #{account.wast}
           h3 Storage
-          pre #{JSON.stringify(account.storage)}
+          pre #{JSON.stringify(account.storage, undefined, 2)}
       if account.source
         #source.tab-pane(role='tabpanel')
           h4 Source
