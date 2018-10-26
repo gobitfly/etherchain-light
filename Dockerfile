@@ -17,4 +17,5 @@ RUN npm config set unsafe-perm true && npm install
 EXPOSE 3000
 
 # this command rpc arg is overwritten by the explorer yaml script
-CMD [ "npm", "start", "--", "--rpc=http://40.114.204.83:8545" ]
+# CMD [ "npm", "start", "--", "--rpc=http://40.114.204.83:8545" ]
+CMD [ "echo", "test" ]
