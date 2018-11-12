@@ -3,8 +3,9 @@ function nameFormatter(config) {
   this.conf = config;
   
   this.format = function(address) {
-    if (this.conf.names[address]) {
-      return this.conf.names[address];
+    const addressLower = address.toLowerCase()
+    if (this.conf.names[addressLower]) {
+      return this.conf.names[addressLower];
     } else {
       return address;
     }
