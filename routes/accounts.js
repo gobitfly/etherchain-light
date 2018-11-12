@@ -20,8 +20,15 @@ router.get('/:offset?', function(req, res, next) {
           return
         }
 
-        let offset = req.params.offset ? req.params.offset : Buffer.alloc(32)
-        offset = '0x' + util.keccak256(offset).toString('hex')
+        let offset = req.params.offset
+        if (offset) {
+          // offset is hash of the address
+          offset = '0x' + util.keccak256(offset).toString('hex')
+        } else {
+          // starting offset should be 0x00...
+          offset = '0x' + Buffer.alloc(32).toString('hex')
+        }
+
         console.log(offset);
 
         // accountRangeAt params: block number or "latest", tx index, start address hash, max results
