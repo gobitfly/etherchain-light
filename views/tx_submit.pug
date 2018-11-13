@@ -1,11 +1,56 @@
 extends layout
 
 block content
-  h3 Submit raw transaction
-  form(action="/explorer/tx/submit", method="post")
-    .form-group
-      label(for="txHex") Signed Transaction Hex
-      textarea.form-control#txHex(rows=15, name="txHex", placeholder="0x...")
-    button.btn.btn-default.pull-right(type="submit") Submit
-  if message
-    p #{message}
+  if txn
+    if message
+      h3#message #{message}
+    script.
+      window.addEventListener('load', async () => {
+        metamask = window.web3;
+        if (window.ethereum) {
+          metamask = new Web3(window.ethereum);
+          try {
+            // Request account access if needed
+            await window.ethereum.enable();
+            console.log('Web3 enabled!');
+            console.log(window.web3);
+          } catch (error) {
+            // User denied account access...
+            console.error(error);
+          }
+        }
+        else if (window.web3) {
+          window.web3 = new Web3(window.web3.currentProvider);
+          console.log('Legacy web3 detected!');
+        }
+        else {
+          console.log('Non-Ethereum browser detected.');
+          return;
+        }
+        
+        transaction = !{JSON.stringify(txn)}
+        console.log("Transaction:\n", transaction)
+        if (transaction) {
+          metamask.eth.sendTransaction(transaction, function(e, tx) {
+            if (!e) {
+              window.location.href = '/explorer/tx/pending'
+            } else {
+              document.getElementById('message').innerHTML = e.message;
+            }
+          })
+        }
+      });
+  else
+    h3 Submit transaction
+    form(action="/explorer/tx/submit", method="post")
+      .form-group
+        label(for="destAddress") Destination address*
+        input.form-control#destAddress(type="text", placeholder="0x...", name="destAddress")
+        label(for="value") Value (Wei)
+        input.form-control#value(type="text", placeholder="0", name="value")
+        label(for="txHex") Transaction data (optional)
+        textarea.form-control#txHex(rows=15, name="txHex", placeholder="0x...")
+      button.btn.btn-default.pull-right(type="submit") Submit
+    if message
+      p #{message}
+

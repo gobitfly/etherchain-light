@@ -6,6 +6,7 @@ var Web3 = require('web3');
 var web3extended = require('web3-extended');
 var abi = require('ethereumjs-abi');
 var abiDecoder = require('abi-decoder');
+var txn = null;
 
 router.get('/pending', function(req, res, next) {
 
@@ -35,17 +36,65 @@ router.get('/pending', function(req, res, next) {
 });
 
 
+
 router.get('/submit', function(req, res, next) {
   res.render('tx_submit', { });
 });
 
+
 router.post('/submit', function(req, res, next) {
+  
+  var config = req.app.get('config');
+  var web3 = new Web3();
+
+  txn = {};
+
+  if (req.body.txHex.length > 0)
+    txn.data = req.body.txHex;
+
+  if (req.body.destAddress)
+    txn.to = req.body.destAddress;
+
+  if (req.body.value) {
+    let value = parseInt(req.body.value);
+    if (!value) {
+      alert("must input number as value");
+      throw("valueError");
+    }
+    txn.value = req.body.value;
+  }
+
+  async.waterfall([
+    function(callback) {
+
+      // metamask is called on the front end
+      res.render('tx_submit', {
+        message: 'Submitting transaction...',
+        txn: txn
+      });
+
+    }
+  ], function(err, hash) {
+    if (err) {
+      res.render('tx_submit', { message: "Error submitting transaction: " + err });
+    } else {
+      res.render('tx_submit', { message: "Transaction submitted. Hash: " + hash });
+    }
+  });
+});
+
+router.get('/submit_raw', function(req, res, next) {
+  res.render('tx_submit_raw', { });
+});
+
+router.post('/submit_raw', function(req, res, next) {
   if (!req.body.txHex) {
-    return res.render('tx_submit', { message: "No transaction data specified"});
+    return res.render('tx_submit_raw', { message: "No transaction data specified!"});
   }
 
   var config = req.app.get('config');
   var web3 = new Web3();
+
   web3.setProvider(config.provider);
 
   async.waterfall([
@@ -56,9 +105,9 @@ router.post('/submit', function(req, res, next) {
     }
   ], function(err, hash) {
     if (err) {
-      res.render('tx_submit', { message: "Error submitting transaction: " + err });
+      res.render('tx_submit_raw', { message: "Error submitting transaction: " + err });
     } else {
-      res.render('tx_submit', { message: "Transaction submitted. Hash: " + hash });
+      res.render('tx_submit_raw', { message: "Transaction submitted. Hash: " + hash });
     }
   });
 });
