@@ -77,7 +77,23 @@ block content
         window.location.hash = "#transaction";
       }
     }
-    showTransactionDiv();
-    getAccount();
-    getBalance();
+
+    async function enableEthereum() {
+      if (window.ethereum) {
+        metamask = new Web3(window.ethereum);
+        try {
+          await window.ethereum.enable();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      await enableEthereum();
+      showTransactionDiv();
+      getAccount();
+      getBalance();
+    })
+
   

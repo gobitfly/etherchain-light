@@ -109,7 +109,6 @@ router.post('/', function(req, res, next) {
       var gasPrice = web3.eth.gasPrice;
       var gasLimit = estimatedGas;
       var privateKey = config.privateKey;
-
       if (privateKey) {
         var rawTx = {
           to: userAccount,
@@ -136,7 +135,7 @@ router.post('/', function(req, res, next) {
         callback('privateKey not set in config file', null);
       }
     }
-  ], function(err, result) {
+  ], function(result, err) {
     data.transaction = result;
     if (err)
       data.errorMessage = err;
