@@ -10,7 +10,7 @@ block content
       if (transaction) {
         metamask.eth.sendTransaction(transaction, function(e, tx) {
           if (!e) {
-            window.location.href = '/tx/pending'
+            window.location.href = '/explorer/tx/pending'
           } else {
             document.getElementById('message').innerHTML = e.message;
           }
