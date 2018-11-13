@@ -5,17 +5,19 @@ block content
     if message
       h3#message #{message}
     script.
-      transaction = !{JSON.stringify(txn)}
-      console.log("Transaction:\n", transaction)
-      if (transaction) {
-        metamask.eth.sendTransaction(transaction, function(e, tx) {
-          if (!e) {
-            window.location.href = '/explorer/tx/pending'
-          } else {
-            document.getElementById('message').innerHTML = e.message;
-          }
-        })
-      }  
+      window.onload = function() {
+        transaction = !{JSON.stringify(txn)}
+        console.log("Transaction:\n", transaction)
+        if (transaction) {
+          metamask.eth.sendTransaction(transaction, function(e, tx) {
+            if (!e) {
+              window.location.href = '/explorer/tx/pending'
+            } else {
+              document.getElementById('message').innerHTML = e.message;
+            }
+          })
+        }
+      };
   else
     h3 Submit transaction
     form(action="/explorer/tx/submit", method="post")
