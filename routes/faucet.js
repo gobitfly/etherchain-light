@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const RateLimit = require('express-rate-limit');
+
 var async = require('async');
 var Web3 = require('web3');
 var web3extended = require('web3-extended');
@@ -48,12 +50,22 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.post('/', new RateLimit({
+  // 15 minutes
+  windowMs: 15*60*1000,
+  // limit each IP to N requests per windowMs
+  max: 200,
+  // disable delaying - full speed until the max limit is reached
+  delayMs: 0
+}));
+
 router.post('/', function(req, res, next) {
-  var config = req.app.get('config');  
+  var nonce = 0;
+  var config = req.app.get('config');
   data.faucetAddress = config.faucetAddress;
   data.faucetBalance = 0;
   data.transaction = null;
-  data.errorMessage = null; 
+  data.errorMessage = null;
 
   var userAccount = req.body.useraccount.trim().toLowerCase();
   var web3 = new Web3();
@@ -62,7 +74,6 @@ router.post('/', function(req, res, next) {
 
   async.waterfall([
     function(callback) {
-      console.log(data.faucetAddress);
       if (data.faucetAddress) {
         web3.eth.getBalance(data.faucetAddress, function(err, balance) {
           callback(err, balance);
@@ -74,10 +85,11 @@ router.post('/', function(req, res, next) {
     function(balance, callback) {
       data.faucetBalance = balance;
       web3.eth.getTransactionCount(data.faucetAddress, function(err, result) {
-        callback(result, err);
+        callback(err, result);
       })
     },
-    function(nonce, callback) {
+    function(txCount, callback) {
+      nonce = txCount;
       if (userAccount) {
         var tx = {
           to: userAccount,
@@ -125,8 +137,6 @@ router.post('/', function(req, res, next) {
       }
     }
   ], function(err, result) {
-    console.log(result);
-    console.log(err);
     data.transaction = result;
     if (err)
       data.errorMessage = err;
