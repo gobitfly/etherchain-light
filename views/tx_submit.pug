@@ -24,6 +24,7 @@ block content
           console.log('Legacy web3 detected!');
         }
         else {
+          document.getElementById('message').innerHTML = "Non-Ethereum browser detected!";
           console.log('Non-Ethereum browser detected.');
           return;
         }

@@ -58,7 +58,6 @@ router.post('/submit', function(req, res, next) {
   if (req.body.value) {
     let value = parseInt(req.body.value);
     if (!value) {
-      alert("must input number as value");
       throw("valueError");
     }
     txn.value = req.body.value;
@@ -99,6 +98,8 @@ router.post('/submit_raw', function(req, res, next) {
 
   async.waterfall([
     function(callback) {
+      if (web3.eth.sendSignedTransaction)
+        web3.eth.sendRawTransaction = web3.eth.sendSignedTransaction;
       web3.eth.sendRawTransaction(req.body.txHex, function(err, result) {
         callback(err, result);
       });
