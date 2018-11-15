@@ -58,7 +58,6 @@ router.post('/submit', function(req, res, next) {
   if (req.body.value) {
     let value = parseInt(req.body.value);
     if (!value) {
-      alert("must input number as value");
       throw("valueError");
     }
     txn.value = req.body.value;
