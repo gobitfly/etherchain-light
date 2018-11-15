@@ -6,8 +6,10 @@ router.post('/', function(req, res, next) {
 	
   if (searchString.length > 22 && searchString.substr(0,2) != '0x')
     searchString = '0x' + searchString;
-    
-  if (searchString.length < 22 && !isNaN(searchString.length)) {
+
+  if (searchString.length === 0) {
+    res.redirect('/explorer');
+  } else if (searchString.length < 22 && !isNaN(searchString.length)) {
     // Most likely a block number, forward to block id handler
     if (searchString.substr(0, 2) === "0x")
       searchString = parseInt(searchString, 16);
