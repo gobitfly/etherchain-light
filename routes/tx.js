@@ -98,7 +98,7 @@ router.post('/submit_raw', function(req, res, next) {
 
   async.waterfall([
     function(callback) {
-      web3.eth.sendRawTransaction(req.body.txHex, function(err, result) {
+      web3.eth.sendSignedTransaction(req.body.txHex, function(err, result) {
         callback(err, result);
       });
     }
