@@ -1,7 +1,11 @@
 var web3 = require('web3');
+var BigNumber = require('bignumber.js');
 
 function formatAmount(amount) {
-  var amountAsString = web3.utils.fromWei(Math.floor(amount).toString(), 'ether');
-  return amountAsString + " ETH";
+  var amountBN = new BigNumber(amount.toString());
+  var amountStr = amountBN.toString(10);
+  var amountAsEth = web3.utils.fromWei(amountStr, 'ether');
+  return amountAsEth.toString() + " ETH";
 }
+
 module.exports = formatAmount;
