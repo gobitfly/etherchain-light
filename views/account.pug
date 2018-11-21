@@ -20,7 +20,7 @@ block content
         a(href='#transactions', aria-controls='transactions', role='tab', data-toggle='tab') Transactions
       if account.isContract
         li(role='presentation')
-          a(href='#code', aria-controls='code', role='tab', data-toggle='tab') Code
+          a(href='#code', aria-controls='code', role='tab', data-toggle='tab') Bytecode
         li(role='presentation')
           a(href='#wastcode', aria-controls='wastcode', role='tab', data-toggle='tab') Wast Code
         li(role='presentation')
@@ -93,7 +93,7 @@ block content
       
       if account.isContract
         #code.tab-pane(role='tabpanel')
-          h3 Code
+          h3 Bytecode
           if !account.source
             a(href="/contract/verify") Upload source
           pre #{account.code}
