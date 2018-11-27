@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
     }, function(lastBlock, callback) {
       var blocks = [];
 
-      var blockCount = 10;
+      var blockCount = 128;
 
       if (lastBlock.number - blockCount < 0) {
         blockCount = lastBlock.number + 1;
@@ -44,12 +44,15 @@ router.get('/', function(req, res, next) {
       block.author = block.author || block.miner;
 
       block.transactions.forEach(function(tx) {
-        if (txs.length === 10) {
+        if (txs.length === 32) {
           return;
         }
         txs.push(tx);
       });
     });
+    if (blocks.length > 10) {
+      blocks = blocks.slice(0,10);
+    }
     res.render('index', { blocks: blocks, txs: txs });
   });
 
