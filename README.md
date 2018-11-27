@@ -50,6 +50,12 @@ Supported Ethereum backend nodes: Parity (Geth is currently not supported as it 
 7. Start the explorer: `npm start`
 8. Browse to `http://localhost:3000`
 
+By default `etherchain` connects to the local rpc server `localhost:8545`, you
+can manually specify a remote rpc server using `npm start -- --rpc=<remote_host>:<port>`.
+
+Currently all links in etherchain has the prefix `/explorer`, in order to make
+all links work locally (including styles and javascript), the prefix has to be removed.
+
 ### Setup using docker
 
 Build then run the container
