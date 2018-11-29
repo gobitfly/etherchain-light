@@ -20,7 +20,11 @@ block content
         a(href='#transactions', aria-controls='transactions', role='tab', data-toggle='tab') Transactions
       if account.isContract
         li(role='presentation')
-          a(href='#code', aria-controls='code', role='tab', data-toggle='tab') Code
+          a(href='#code', aria-controls='code', role='tab', data-toggle='tab') Bytecode
+        li(role='presentation')
+          a(href='#wastcode', aria-controls='wastcode', role='tab', data-toggle='tab') Wast Code
+        li(role='presentation')
+          a(href='#storage', aria-controls='storage', role='tab', data-toggle='tab') Storage  
       if account.source
         li(role='presentation')
           a(href='#source', aria-controls='source', role='tab', data-toggle='tab') Source
@@ -89,13 +93,15 @@ block content
       
       if account.isContract
         #code.tab-pane(role='tabpanel')
-          h3 Code
+          h3 Bytecode
           if !account.source
             a(href="/contract/verify") Upload source
           pre #{account.code}
-          if account.wast
-            h3 Wast code
-            pre(class="wast") #{account.wast}
+      if account.wast
+        #wastcode.tab-pane(role='tabpanel')  
+          h3 Wast code
+          pre(class="wast") #{account.wast}
+        #storage.tab-pane(role='tabpanel')
           h3 Storage
           pre #{JSON.stringify(account.storage, undefined, 2)}
       if account.source
