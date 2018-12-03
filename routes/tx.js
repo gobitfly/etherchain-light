@@ -165,6 +165,8 @@ router.get('/:tx', function(req, res, next) {
       if (!tx.to) {
         tx.contractAddress = receipt.contractAddress;
       }
+    } else {
+      tx.gasUsed = 0;
     }
 
     if (traces != null) {
