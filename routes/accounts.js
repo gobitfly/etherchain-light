@@ -56,6 +56,7 @@ router.get('/:offset?', function(req, res, next) {
       var lastAccount = accounts[accounts.length - 1];
       
       async.eachSeries(accounts, function(account, eachCallback) {
+        account = util.toChecksumAddress(account);
         web3.eth.getCode(account, function(err, code) {
           if (err) {
             return eachCallback(err);

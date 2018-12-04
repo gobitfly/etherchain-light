@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var util   = require('ethereumjs-util');
 
 var async = require('async');
 var Web3 = require('web3');
@@ -73,7 +74,8 @@ router.get('/:account', function(req, res, next) {
       }
 
       // fetch verified contract source from db
-      db.get(req.params.account.toLowerCase(), function(err, value) {
+      var account = util.toChecksumAddress(req.params.account);
+      db.get(account, function(err, value) {
         callback(null, value);
       });
     }, function(source, callback) {
@@ -115,7 +117,7 @@ router.get('/:account', function(req, res, next) {
       var blocks = [];
  
       var blockCount = BLOCK_COUNT;
-      var address = req.params.account.toLowerCase();
+      var address = req.params.account;
 
       if (nodeVersion.includes('aleth')) {
         blockCount = 50; // aleth's jsonrpc script does not support looking into 1000 blocks
@@ -127,7 +129,8 @@ router.get('/:account', function(req, res, next) {
           blockCount = data.lastBlock;
         }
       }
-
+      address = util.toChecksumAddress(address);
+      
       var traces = [];
 
       if (data.lastBlock - blockCount < 0) {
@@ -148,8 +151,8 @@ router.get('/:account', function(req, res, next) {
             if (!e.to) {
               e.to = '';
             }
-            e.from = e.from.toLowerCase();
-            e.to = e.to.toLowerCase();
+            e.from = util.toChecksumAddress(e.from);
+            e.to = util.toChecksumAddress(e.to);
             if (address == e.from || address == e.to) {
               traces.push(e);
             }
@@ -166,15 +169,17 @@ router.get('/:account', function(req, res, next) {
     var tracesSent = [];
     var tracesReceived = [];
 
-    data.address = req.params.account.toLowerCase();
+    data.address = req.params.account;
 
     // aleth doesn't includes 0x in address
     if (!data.address.includes('0x')) {
       data.address = '0x' + data.address;
     }
+    data.address = util.toChecksumAddress(data.address);
 
     traces.forEach(function(trace) {
-
+      trace.from = util.toChecksumAddress(trace.from);
+      trace.to = util.toChecksumAddress(trace.to);
       if (trace.from == data.address) {
         tracesSent.push(trace);
       } else {
