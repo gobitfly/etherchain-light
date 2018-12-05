@@ -13,11 +13,11 @@ block content
     tr
       td Block hash:
       td
-        a(href="/explorer/block/" + blockHash) #{blockHash}
+        a(href="block/" + blockHash) #{blockHash}
     tr
       td Miner:
       td
-        a(href="/explorer/account/" + uncle.author) #{nameformatter.format(uncle.author)}
+        a(href="account/" + uncle.author) #{nameformatter.format(uncle.author)}
     tr
       td Gas Limit:
       td #{numeral(uncle.gasLimit).format()}

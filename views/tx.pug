@@ -6,27 +6,27 @@ block content
     tr
       td Hash:
       td
-        a(href="/explorer/tx/" + tx.hash) #{tx.hash}
+        a(href="tx/" + tx.hash) #{tx.hash}
     tr
       td Block hash:
       td
-        a(href="/explorer/block/" + tx.blockHash) #{tx.blockHash}
+        a(href="block/" + tx.blockHash) #{tx.blockHash}
     tr
       td Block number:
       td
-        a(href="/explorer/block/" + tx.blockNumber) #{tx.blockNumber}
+        a(href="block/" + tx.blockNumber) #{tx.blockNumber}
     tr
       td From:
       td
-        a(href="/explorer/account/" + tx.from) #{nameformatter.format(tx.from)}
+        a(href="account/" + tx.from) #{nameformatter.format(tx.from)}
     tr
       td To:
       td
         if tx.to
-          a(href="/explorer/account/" + tx.to) #{nameformatter.format(tx.to)}
+          a(href="account/" + tx.to) #{nameformatter.format(tx.to)}
         else
           | New Contract (deployment address:
-          a(href="/explorer/account/" + tx.contractAddress) #{nameformatter.format(tx.contractAddress)}
+          a(href="account/" + tx.contractAddress) #{nameformatter.format(tx.contractAddress)}
           | )
     tr
       td Amount:
@@ -104,7 +104,7 @@ block content
       td
         pre #{tx.input}
 
-  a(href="/explorer/tx/raw/" + tx.hash) Raw Trace
+  a(href="tx/raw/" + tx.hash) Raw Trace
   h4 Internal Transactions
   table.table
     thead
@@ -124,22 +124,22 @@ block content
           td.capitalize #{trace.type}
           if trace.type === "call"
             td
-              a(href="/explorer/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+              a(href="account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
             td
-              a(href="/explorer/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+              a(href="account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
             td #{ethformatter(trace.action.value)}
           else if trace.type === "create"
             td
-              a(href="/explorer/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+              a(href="account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
             td
               if trace.result
-                a(href="/explorer/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+                a(href="account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
               else
                 div #{'-'}
             td #{ethformatter(trace.action.value)}
           else if trace.type === "suicide"
             td
-              a(href="/explorer/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+              a(href="account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
             td
-              a(href="/explorer/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+              a(href="account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
             td #{ethformatter(trace.action.balance)}

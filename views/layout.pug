@@ -11,10 +11,11 @@ html(lang="en")
     meta(name='keywords', content='ethereum, explorer, blockchain, etherchain, cryptocurrency, cryptocurrencies, bitcoin')
 
     title ewasm testnet
+    base(href=config.baseUrl)
     link(href=config.bootstrapUrl, rel="stylesheet", crossorigin="anonymous")    
-    link(rel='stylesheet', href='/explorer/stylesheets/style.css')
-    script(src='/explorer/js/libwabt.js')
-    script(src='/explorer/js/compile2wast.js')
+    link(rel='stylesheet', href='stylesheets/style.css')
+    script(src='js/libwabt.js')
+    script(src='js/compile2wast.js')
   script.
     metamask = window.web3
   body
@@ -27,32 +28,32 @@ html(lang="en")
             span.icon-bar
             span.icon-bar
           |
-          img.logo(alt='logo' src='/explorer/images/logo.png')
-          a.navbar-brand(href='/explorer') ewasm testnet
-        #navbar.collapse.navbar-collapse
+          img.logo(alt='logo' src='images/logo.png')
+          a.navbar-brand(href='#') ewasm testnet
+        navbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             li
-              a(href='/explorer') Home
+              a(href='#') Home
             li
-              a(href='/explorer/accounts') Accounts
+              a(href='accounts') Accounts
             li
-              a(href='/explorer/tx/pending') Pending Tx
+              a(href='tx/pending') Pending Tx
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
                 | Tools
                 span.caret
               ul.dropdown-menu
                 li
-                  a(href='/explorer/tx/submit') Submit Tx
+                  a(href='tx/submit') Submit Tx
                 li
-                  a(href='/explorer/tx/submit_raw') Submit Raw Tx
+                  a(href='tx/submit_raw') Submit Raw Tx
                 // hide verify links
                 //li
-                //  a(href='/explorer/contract/verify') Verify Contract 
+                //  a(href='contract/verify') Verify Contract 
                 //li
-                //  a(href='/explorer/signature/verify') Verify Signature                
+                //  a(href='signature/verify') Verify Signature                
               
-          form.navbar-form.navbar-right(action="/explorer/search", method="POST")
+          form.navbar-form.navbar-right(action="search", method="POST")
             .form-group
               input.form-control#search(type='text', placeholder='Block / Tx / Account', name='search')
             |
