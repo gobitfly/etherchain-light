@@ -49,21 +49,21 @@ block content
                 if trace.type === "reward" && trace.action.author === account.address
                   tr
                     td
-                      a(href="/explorer/block/" + trace.blockNumber) #{trace.hash.substr(0, 10)}...
+                      a(href="block/" + trace.blockNumber) #{trace.hash.substr(0, 10)}...
                     td
-                      a(href="/explorer/block/" + trace.blockNumber) #{trace.blockNumber}
+                      a(href="block/" + trace.blockNumber) #{trace.blockNumber}
                     td Mining Reward
                     td
                     td New Coins
                     td
-                      a(href="/explorer/account/" + trace.action.author) #{nameformatter.format(trace.action.author)}
+                      a(href="account/" + trace.action.author) #{nameformatter.format(trace.action.author)}
                     td #{ethformatter(trace.action.value)}
                 else if trace.type !== "reward"
                   tr
                     td
-                      a(href="/explorer/tx/" + trace.hash)  #{trace.hash.substr(0, 10)}...
+                      a(href="tx/" + trace.hash)  #{trace.hash.substr(0, 10)}...
                     td
-                      a(href="/explorer/block/" + trace.blockNumber) #{trace.blockNumber}
+                      a(href="block/" + trace.blockNumber) #{trace.blockNumber}
                     td.capitalize
                       if trace.error
                         span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
@@ -75,7 +75,7 @@ block content
                         else
                           span.glyphicon.glyphicon-import(style="color: green;")
                       td
-                        a(href="/explorer/account/" + trace.from) #{nameformatter.format(trace.from)}
+                        a(href="account/" + trace.from) #{nameformatter.format(trace.from)}
                       td
                         p New Contract
                       td #{ethformatter(trace.value)}
@@ -86,9 +86,9 @@ block content
                         else
                           span.glyphicon.glyphicon-import(style="color: green;")
                       td
-                        a(href="/explorer/account/" + trace.from) #{nameformatter.format(trace.from)}
+                        a(href="account/" + trace.from) #{nameformatter.format(trace.from)}
                       td
-                        a(href="/explorer/account/" + trace.to) #{nameformatter.format(trace.to)}
+                        a(href="account/" + trace.to) #{nameformatter.format(trace.to)}
                       td #{ethformatter(trace.value)}
       
       if account.isContract

@@ -34,7 +34,7 @@ block content
         if (transaction) {
           metamask.eth.sendTransaction(transaction, function(e, tx) {
             if (!e) {
-              window.location.href = '/explorer/tx/pending'
+              window.location.href = 'tx/pending'
             } else {
               document.getElementById('message').innerHTML = e.message;
             }
@@ -43,7 +43,7 @@ block content
       });
   else
     h3 Submit transaction
-    form(action="/explorer/tx/submit", method="post")
+    form(action="tx/submit", method="post")
       .form-group
         label(for="destAddress") Destination address*
         input.form-control#destAddress(type="text", placeholder="0x...", name="destAddress")
@@ -54,4 +54,3 @@ block content
       button.btn.btn-default.pull-right(type="submit") Submit
     if message
       p #{message}
-
