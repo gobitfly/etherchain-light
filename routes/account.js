@@ -49,6 +49,7 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(code, callback) {
       data.code = code;
+      data.code_length = (code.length / 2) - 1;
       data.wast = false;
       if (code !== "0x") {
         data.isContract = true;
