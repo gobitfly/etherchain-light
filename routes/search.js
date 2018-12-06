@@ -12,10 +12,13 @@ router.post('/', function(req, res, next) {
   if (searchString.length === 0) {
     res.redirect(config.baseUrl);
   } else if (searchString.length < 22 && !isNaN(searchString.length)) {
-    // Most likely a block number, forward to block id handler
-    if (searchString.substr(0, 2) === "0x")
-      searchString = parseInt(searchString, 16);
-    res.redirect(config.baseUrl + 'block/' + searchString);
+    var searchNum = parseInt(searchString);
+    if (!isNaN(searchNum) && searchNum >= 0) {
+      // Most likely a block number, forward to block id handler
+      res.redirect(config.baseUrl + 'block/' + searchNum);
+    } else {
+      return next({ message: "Error: Invalid search string!" });
+    }
   } else if (searchString.length == 66) {
     res.redirect(config.baseUrl + 'tx/' + searchString);
   } else if (searchString.length == 42) {
