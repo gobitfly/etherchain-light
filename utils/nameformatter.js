@@ -1,13 +1,14 @@
+const util = require('ethereumjs-util');
 
 function nameFormatter(config) {
   this.conf = config;
   
   this.format = function(address) {
-    const addressLower = address.toLowerCase()
-    if (this.conf.names[addressLower]) {
-      return this.conf.names[addressLower];
+    const checksumAddress = util.toChecksumAddress(address);
+    if (this.conf.names[checksumAddress]) {
+      return this.conf.names[checksumAddress];
     } else {
-      return address;
+      return checksumAddress;
     }
   }
 }

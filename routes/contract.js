@@ -7,6 +7,7 @@ var tmp = require('tmp');
 var fs = require('fs');
 var Web3 = require('web3');
 var web3extended = require('web3-extended');
+var util = require('ethereumjs-util');
 
 //var versions = JSON.parse(fs.readFileSync('./utils/solc-bin/bin/list.json')).builds.reverse();
 var versions = {};
@@ -22,7 +23,7 @@ router.post('/verify', function(req, res, next) {
   web3extended(web3);
   web3.setProvider(config.provider);
   
-  var contractAddress = req.body.contractAddress.toLowerCase();
+  var contractAddress = util.toChecksumAddress(req.body.contractAddress);
   var contractName = req.body.contractName;
   var contractSource = req.body.contractSource;
   var compilerVersion = req.body.compilerVersion;
