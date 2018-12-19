@@ -17,7 +17,8 @@ var config = function (endpoint) {
     "0x000000000000000000000000000000000000000A": "sentinel contract",
     "0x000000000000000000000000000000000000000b": "evm2wasm contract"
   }
-
+  this.faucetAddress = "0x9fa4f23079bae7a7a5c392b67e18093310315bfc";
+  //this.privateKey = new Buffer('<insert_private_key_here>', 'hex');
 }
 
 module.exports = config;
