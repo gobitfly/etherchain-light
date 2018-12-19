@@ -7,7 +7,7 @@ block content
     div.div.panel-body
       p address: #{data.faucetAddress}
       p balance: #{ethformatter(data.faucetBalance)}
-      form(action='/faucet' method='post')
+      form(action='/explorer/faucet' method='post')
         .form-group
           input.from-control#useraccount(type='hidden', name="useraccount")
         |
