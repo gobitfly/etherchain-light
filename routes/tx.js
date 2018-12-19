@@ -22,6 +22,9 @@ router.get('/pending', function(req, res, next) {
         if (err) {
           return callback(err);
         }
+
+
+        console.log(JSON.stringify(block));
         txs = block.transactions;
         callback(err, txs);
       });
@@ -38,7 +41,7 @@ router.get('/pending', function(req, res, next) {
 
 
 router.get('/submit', function(req, res, next) {
-  res.render('tx_submit', { });
+  res.render('tx-submit', { });
 });
 
 
@@ -67,7 +70,7 @@ router.post('/submit', function(req, res, next) {
     function(callback) {
 
       // metamask is called on the front end
-      res.render('tx_submit', {
+      res.render('tx-submit', {
         message: 'Submitting transaction...',
         txn: txn
       });
@@ -75,9 +78,9 @@ router.post('/submit', function(req, res, next) {
     }
   ], function(err, hash) {
     if (err) {
-      res.render('tx_submit', { message: "Error submitting transaction: " + err });
+      res.render('tx-submit', { message: "Error submitting transaction: " + err });
     } else {
-      res.render('tx_submit', { message: "Transaction submitted. Hash: " + hash });
+      res.render('tx-submit', { message: "Transaction submitted. Hash: " + hash });
     }
   });
 });
