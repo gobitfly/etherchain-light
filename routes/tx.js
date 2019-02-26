@@ -83,15 +83,19 @@ router.get('/:tx', function(req, res, next) {
         callback(err, tx, receipt, traces);
       });
     }, function(tx, receipt, traces, callback) {
-      db.get(tx.to, function(err, value) {
-        callback(null, tx, receipt, traces, value);
-      });
+      try {
+        db.get(tx.to ? tx.to : tx.creates, function(err, value) {
+          callback(null, tx, receipt, traces, value);
+        });
+      } catch(err) {
+        callback(err, tx, receipt, traces, null)
+      }
     }
   ], function(err, tx, receipt, traces, source) {
     if (err) {
       return next(err);
     }
-     
+
     // Try to match the tx to a solidity function call if the contract source is available
     if (source) {
       tx.source = JSON.parse(source);

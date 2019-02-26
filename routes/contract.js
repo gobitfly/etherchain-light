@@ -67,7 +67,7 @@ router.post('/verify', function(req, res, next) {
       
       var tmpName = tmp.tmpNameSync();
       var outputName = tmp.tmpNameSync();
-      var solcCommand = "/usr/bin/nodejs ./utils/compile.js " + tmpName + " " + outputName;
+      var solcCommand = "node ./utils/compile.js " + tmpName + " " + outputName;
       
       var data = { source: contractSource, optimize: optimize, compilerVersion: compilerVersion };
       console.log(solcCommand);
