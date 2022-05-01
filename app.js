@@ -17,8 +17,7 @@ var search = require('./routes/search');
 var config = new(require('./config.js'))();
 
 var levelup = require('levelup');
-var leveldown = require('leveldown');
-var db = levelup(leveldown('./data'));
+var db = levelup('./data');
 
 var app = express();
 
